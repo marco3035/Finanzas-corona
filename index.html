@@ -9,994 +9,525 @@
 <meta name="apple-mobile-web-app-title" content="Finanzas">
 <meta name="theme-color" content="#000000">
 <title>Finanzas Corona</title>
-<link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 <style>
-* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-:root {
-  --bg: #000;
-  --bg2: #1c1c1e;
-  --bg3: #2c2c2e;
-  --bg4: #3a3a3c;
-  --text: #fff;
-  --text2: rgba(255,255,255,0.6);
-  --text3: rgba(255,255,255,0.3);
-  --sep: rgba(255,255,255,0.1);
-  --blue: #0a84ff;
-  --green: #30d158;
-  --red: #ff453a;
-  --yellow: #ffd60a;
-  --orange: #ff9f0a;
-  --purple: #bf5af2;
-  --pink: #ff375f;
-  --teal: #5ac8fa;
-  --amex: #c8973a;
-  --banamex: #ff453a;
-  --invex: #bf5af2;
-  --marco: #0a84ff;
-  --fabiola: #ff375f;
-  --r: 16px;
-  --r2: 12px;
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+:root{
+  --bg:#000;--bg2:#1c1c1e;--bg3:#2c2c2e;--bg4:#3a3a3c;
+  --text:#fff;--text2:rgba(255,255,255,.6);--text3:rgba(255,255,255,.3);
+  --sep:rgba(255,255,255,.08);
+  --blue:#0a84ff;--green:#30d158;--red:#ff453a;--yellow:#ffd60a;
+  --orange:#ff9f0a;--purple:#bf5af2;--pink:#ff375f;--teal:#5ac8fa;
+  --amex:#c8973a;--banamex:#ff453a;--invex:#bf5af2;
+  --marco:#0a84ff;--fabiola:#ff375f;
+  --r:16px;--r2:12px;
 }
-html, body { height:100%; overflow:hidden; background:var(--bg); color:var(--text); font-family:-apple-system, 'SF Pro Display', sans-serif; }
+html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:-apple-system,sans-serif;}
+.app{height:100vh;display:flex;flex-direction:column;overflow:hidden;}
+.status-bar{height:50px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;font-size:13px;font-weight:600;flex-shrink:0;}
+.screens{flex:1;overflow:hidden;position:relative;}
+.screen{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;display:none;padding-bottom:90px;}
+.screen.active{display:block;animation:fadeUp .25s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.tab-bar{position:fixed;bottom:0;left:0;right:0;z-index:100;background:rgba(18,18,18,.95);backdrop-filter:blur(30px);border-top:1px solid var(--sep);display:flex;padding:10px 0 calc(10px + env(safe-area-inset-bottom));flex-shrink:0;}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:2px 4px;border:none;background:none;color:var(--text3);cursor:pointer;transition:color .15s;position:relative;}
+.tab.active{color:var(--blue);}
+.tab-icon{font-size:22px;line-height:1.2;}
+.tab-label{font-size:9px;font-weight:600;letter-spacing:.2px;}
+.tab-dot{width:5px;height:5px;background:var(--red);border-radius:50%;position:absolute;top:0;right:calc(50% - 18px);}
+.page-header{padding:16px 20px 8px;position:sticky;top:0;z-index:10;background:rgba(0,0,0,.85);backdrop-filter:blur(20px);}
+.page-title{font-size:32px;font-weight:700;letter-spacing:-.5px;}
+.page-sub{font-size:13px;color:var(--text2);margin-top:2px;}
+.sec-hd{padding:20px 20px 8px;display:flex;justify-content:space-between;align-items:center;}
+.sec-title{font-size:20px;font-weight:700;}
+.sec-sub{font-size:13px;color:var(--text2);}
+.card{background:var(--bg2);border-radius:var(--r);margin:0 16px 12px;overflow:hidden;}
+.crow{display:flex;justify-content:space-between;align-items:center;padding:13px 16px;border-bottom:1px solid var(--sep);}
+.crow:last-child{border-bottom:none;}
+.crow-l{flex:1;}
+.crow-label{font-size:15px;}
+.crow-sub{font-size:12px;color:var(--text2);margin-top:2px;}
+.crow-r{text-align:right;}
+.crow-val{font-size:15px;font-weight:600;}
+.crow-hint{font-size:11px;color:var(--text2);margin-top:2px;}
+.lhd{padding:8px 16px;font-size:12px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.8px;background:rgba(255,255,255,.025);}
+.hero-block{padding:20px;text-align:center;}
+.hero-eye{font-size:12px;color:var(--text2);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;}
+.hero-num{font-size:52px;font-weight:300;letter-spacing:-2px;line-height:1;}
+.hero-cap{font-size:13px;color:var(--text2);margin-top:6px;}
+.alert-bar{margin:4px 16px 12px;background:rgba(255,69,58,.12);border:1px solid rgba(255,69,58,.25);border-radius:var(--r2);padding:12px 14px;display:flex;gap:10px;align-items:flex-start;}
+.alert-icon{font-size:18px;flex-shrink:0;margin-top:1px;}
+.alert-text{font-size:13px;color:#ff6b63;line-height:1.5;font-weight:500;}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 16px 12px;}
+.stat-tile{background:var(--bg2);border-radius:var(--r2);padding:14px;}
+.st-icon{font-size:22px;margin-bottom:6px;}
+.st-val{font-size:20px;font-weight:700;letter-spacing:-.5px;}
+.st-label{font-size:11px;color:var(--text2);margin-top:2px;line-height:1.3;}
+.wallet{margin:0 16px 12px;border-radius:var(--r);padding:20px;position:relative;overflow:hidden;min-height:155px;}
+.wallet::before{content:'';position:absolute;top:-50px;right:-50px;width:160px;height:160px;border-radius:50%;background:rgba(255,255,255,.06);}
+.w-bank{font-size:12px;font-weight:700;letter-spacing:1px;opacity:.75;position:relative;z-index:1;}
+.w-amount{font-size:34px;font-weight:300;letter-spacing:-1px;margin:14px 0 3px;position:relative;z-index:1;}
+.w-detail{font-size:11px;opacity:.65;position:relative;z-index:1;}
+.w-num{font-size:12px;font-family:monospace;opacity:.5;margin-top:14px;position:relative;z-index:1;}
+.w-badge{position:absolute;top:16px;right:16px;padding:4px 10px;border-radius:20px;font-size:10px;font-weight:700;z-index:2;}
+.wb-ok{background:rgba(48,209,88,.2);color:#30d158;}
+.wb-warn{background:rgba(255,69,58,.25);color:#ff6b63;}
+.w-bar{height:3px;background:rgba(255,255,255,.15);border-radius:3px;margin-top:12px;overflow:hidden;position:relative;z-index:1;}
+.w-bar-f{height:100%;border-radius:3px;background:rgba(255,255,255,.6);}
+.w-bar-lb{display:flex;justify-content:space-between;font-size:9px;opacity:.5;margin-top:3px;position:relative;z-index:1;}
 
-/* STATUS BAR */
-.status-bar { height:44px; display:flex; align-items:center; justify-content:space-between; padding:0 20px; font-size:12px; font-weight:600; }
+/* TRANSFER HERO — la estrella de la pantalla Split */
+.tf-hero{margin:0 16px 12px;background:linear-gradient(135deg,rgba(48,209,88,.15),rgba(10,132,255,.08));border:1px solid rgba(48,209,88,.25);border-radius:var(–r);padding:20px;}
+.tf-eye{font-size:11px;color:var(–green);font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:4px;}
+.tf-amount{font-size:48px;font-weight:300;letter-spacing:-2px;color:var(–green);line-height:1;}
+.tf-sub{font-size:13px;color:var(–text2);margin-top:4px;}
+.tf-divider{border:none;border-top:1px solid rgba(255,255,255,.08);margin:16px 0;}
+.tf-row{display:flex;justify-content:space-between;padding:5px 0;font-size:14px;}
+.tf-row-label{color:var(–text2);}
+.tf-row-val{font-weight:600;}
+.tf-total{display:flex;justify-content:space-between;padding:10px 0 0;border-top:1px solid rgba(255,255,255,.1);margin-top:4px;}
+.tf-total-label{font-size:16px;font-weight:700;}
+.tf-total-val{font-size:20px;font-weight:700;color:var(–green);}
 
-/* PAGES */
-.app { height:100vh; display:flex; flex-direction:column; overflow:hidden; }
-.screens { flex:1; overflow:hidden; position:relative; }
-.screen { position:absolute; inset:0; overflow-y:auto; overflow-x:hidden; display:none; padding-bottom:84px; }
-.screen.active { display:block; animation:slideIn .3s ease; }
-@keyframes slideIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+.person-card{margin:0 16px 12px;background:var(–bg2);border-radius:var(–r);overflow:hidden;}
+.person-hd{padding:16px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(–sep);}
+.person-av{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.person-name{font-size:17px;font-weight:600;}
+.person-inc{font-size:12px;color:var(–text2);margin-top:2px;}
+.person-libre{text-align:right;}
+.libre-val{font-size:24px;font-weight:700;}
+.libre-lbl{font-size:11px;color:var(–text2);}
+.frow{display:flex;justify-content:space-between;align-items:center;padding:11px 16px;border-bottom:1px solid var(–sep);}
+.frow:last-child{border-bottom:none;}
+.frow-label{font-size:14px;color:var(–text2);}
+.frow-val{font-size:14px;font-weight:600;}
+.ftotal{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:rgba(255,255,255,.04);border-top:1px solid var(–sep);}
+.ftotal-lbl{font-size:15px;font-weight:600;}
+.ftotal-val{font-size:22px;font-weight:700;}
 
-/* TAB BAR */
-.tab-bar {
-position:fixed; bottom:0; left:0; right:0; z-index:100;
-background:rgba(28,28,30,0.92); backdrop-filter:blur(20px) saturate(180%);
-border-top:1px solid var(–sep);
-display:flex; padding:8px 0 calc(8px + env(safe-area-inset-bottom));
-}
-.tab { flex:1; display:flex; flex-direction:column; align-items:center; gap:2px; padding:4px; border:none; background:none; color:var(–text3); cursor:pointer; transition:color .15s; }
-.tab.active { color:var(–blue); }
-.tab-icon { font-size:22px; line-height:1; }
-.tab-label { font-size:10px; font-weight:500; }
+.note{margin:0 16px 12px;border-radius:var(–r2);padding:12px 14px;font-size:13px;line-height:1.5;font-weight:500;}
+.note-warn{background:rgba(255,69,58,.08);border:1px solid rgba(255,69,58,.2);color:#ff6b63;}
+.note-ok{background:rgba(48,209,88,.08);border:1px solid rgba(48,209,88,.2);color:#30d158;}
+.note-info{background:rgba(10,132,255,.08);border:1px solid rgba(10,132,255,.2);color:#4da3ff;}
 
-/* SECTIONS */
-.section-header { padding:32px 20px 8px; display:flex; justify-content:space-between; align-items:flex-end; }
-.section-title { font-size:28px; font-weight:700; letter-spacing:-.5px; }
-.section-sub { font-size:13px; color:var(–text2); }
-.section-action { font-size:15px; color:var(–blue); font-weight:500; }
+.cat-row{padding:12px 16px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(–sep);}
+.cat-row:last-child{border-bottom:none;}
+.cat-ic{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.cat-name{font-size:15px;font-weight:500;}
+.cat-who{font-size:12px;color:var(–text2);margin-top:2px;}
+.cat-r{text-align:right;}
+.cat-amt{font-size:15px;font-weight:600;}
+.cat-pct{font-size:11px;color:var(–text2);margin-top:1px;}
 
-/* CARDS */
-.card { background:var(–bg2); border-radius:var(–r); margin:0 16px 12px; overflow:hidden; }
-.card-inner { padding:16px; }
-.card-row { display:flex; justify-content:space-between; align-items:center; padding:12px 16px; border-bottom:1px solid var(–sep); }
-.card-row:last-child { border-bottom:none; }
-.card-label { font-size:15px; color:var(–text2); }
-.card-value { font-size:15px; font-weight:600; }
+.badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;}
+.bm{background:rgba(10,132,255,.2);color:#4da3ff;}
+.bf{background:rgba(255,55,95,.2);color:#ff6b8a;}
+.bs{background:rgba(48,209,88,.2);color:#30d158;}
+.be{background:rgba(255,255,255,.1);color:var(–text3);}
 
-/* HERO BALANCE */
-.hero { padding:24px 20px 20px; text-align:center; }
-.hero-label { font-size:13px; color:var(–text2); margin-bottom:4px; }
-.hero-amount { font-size:56px; font-weight:300; letter-spacing:-2px; line-height:1; }
-.hero-sub { font-size:13px; color:var(–text2); margin-top:8px; }
+.adj-row{padding:13px 16px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(–sep);cursor:pointer;}
+.adj-row:last-child{border-bottom:none;}
+.adj-row:active{background:rgba(255,255,255,.05);}
+.adj-desc{font-size:15px;font-weight:500;}
+.adj-meta{font-size:11px;color:var(–text2);margin-top:3px;}
+.adj-amt{font-size:15px;font-weight:600;margin-right:8px;}
+.chev{color:var(–text3);font-size:18px;}
 
-/* WALLET CARDS */
-.wallet-card {
-margin:0 16px 12px;
-border-radius:var(–r);
-padding:20px;
-position:relative;
-overflow:hidden;
-min-height:160px;
-}
-.wallet-card::after {
-content:’’;
-position:absolute;
-top:-40px; right:-40px;
-width:180px; height:180px;
-border-radius:50%;
-background:rgba(255,255,255,0.06);
-}
-.wc-bank { font-size:13px; font-weight:600; opacity:.8; margin-bottom:auto; }
-.wc-amount { font-size:36px; font-weight:300; letter-spacing:-1px; margin:20px 0 4px; }
-.wc-min { font-size:12px; opacity:.7; }
-.wc-num { font-size:13px; font-family:monospace; opacity:.6; margin-top:16px; }
-.wc-badge {
-position:absolute; top:16px; right:16px;
-padding:4px 10px; border-radius:20px;
-font-size:11px; font-weight:600;
-background:rgba(255,255,255,0.15); backdrop-filter:blur(10px);
-}
-.wc-badge.warn { background:rgba(255,69,58,.3); color:#ff453a; }
-.wc-badge.ok { background:rgba(48,209,88,.2); color:#30d158; }
-.progress-wrap { margin-top:12px; }
-.prog { height:3px; background:rgba(255,255,255,.2); border-radius:3px; overflow:hidden; }
-.prog-f { height:100%; border-radius:3px; background:rgba(255,255,255,.7); }
-.prog-labels { display:flex; justify-content:space-between; margin-top:4px; font-size:10px; opacity:.6; }
+.tog-row{padding:12px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(–sep);}
+.tog-row:last-child{border-bottom:none;}
+.tog-lbl{font-size:15px;}
+.tog{width:51px;height:31px;background:var(–bg4);border-radius:16px;position:relative;cursor:pointer;transition:background .2s;border:none;flex-shrink:0;}
+.tog.on{background:var(–green);}
+.tog-thumb{position:absolute;top:2px;left:2px;width:27px;height:27px;border-radius:50%;background:#fff;transition:left .2s;box-shadow:0 2px 6px rgba(0,0,0,.4);}
+.tog.on .tog-thumb{left:22px;}
 
-/* QUICK STATS */
-.quick-stats { display:grid; grid-template-columns:1fr 1fr; gap:12px; padding:0 16px 12px; }
-.stat-card { background:var(–bg2); border-radius:var(–r2); padding:16px; }
-.stat-icon { font-size:24px; margin-bottom:8px; }
-.stat-val { font-size:22px; font-weight:700; letter-spacing:-.5px; }
-.stat-label { font-size:12px; color:var(–text2); margin-top:2px; }
+.insight{margin:0 16px 10px;border-radius:var(–r2);padding:14px;display:flex;gap:12px;}
+.ins-icon{font-size:20px;flex-shrink:0;margin-top:1px;}
+.ins-body h4{font-size:14px;font-weight:600;margin-bottom:3px;}
+.ins-body p{font-size:13px;color:var(–text2);line-height:1.5;}
+.ins-tag{font-size:12px;font-weight:600;margin-top:6px;}
 
-/* SPLIT PERSON */
-.person-card { margin:0 16px 12px; border-radius:var(–r); overflow:hidden; }
-.person-header { padding:16px; display:flex; align-items:center; gap:12px; }
-.person-avatar { width:44px; height:44px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0; }
-.person-name { font-size:17px; font-weight:600; }
-.person-income { font-size:13px; color:var(–text2); margin-top:2px; }
-.person-balance { margin-left:auto; text-align:right; }
-.balance-val { font-size:22px; font-weight:700; }
-.balance-label { font-size:11px; color:var(–text2); }
-.flow-item { padding:12px 16px; display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(–sep); }
-.flow-name { font-size:15px; color:var(–text2); }
-.flow-val { font-size:15px; font-weight:600; }
-.flow-total { padding:14px 16px; display:flex; justify-content:space-between; border-top:1px solid var(–sep); background:rgba(255,255,255,.04); }
-.flow-total-label { font-size:15px; font-weight:600; }
-.flow-total-val { font-size:20px; font-weight:700; }
+.meta-row{padding:13px 16px;display:flex;align-items:center;gap:14px;border-bottom:1px solid var(–sep);}
+.meta-row:last-child{border-bottom:none;}
+.meta-n{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;}
+.meta-text{font-size:13px;color:var(–text2);line-height:1.5;flex:1;}
+.meta-text strong{color:var(–text);}
 
-/* INSIGHT CARDS */
-.insight { margin:0 16px 10px; border-radius:var(–r2); padding:14px; display:flex; gap:12px; align-items:flex-start; }
-.insight-icon { font-size:20px; flex-shrink:0; margin-top:1px; }
-.insight-body h4 { font-size:14px; font-weight:600; margin-bottom:3px; }
-.insight-body p { font-size:13px; color:var(–text2); line-height:1.5; }
-.insight-tag { font-size:12px; font-weight:600; margin-top:6px; }
+.import-zone{margin:0 16px 12px;border:2px dashed rgba(10,132,255,.3);border-radius:var(–r);padding:28px;text-align:center;cursor:pointer;background:rgba(10,132,255,.04);}
+.import-zone:active{border-color:var(–blue);}
+.iz-icon{font-size:36px;margin-bottom:10px;}
+.iz-title{font-size:16px;font-weight:600;margin-bottom:4px;}
+.iz-sub{font-size:13px;color:var(–text2);}
 
-/* ALERT BANNER */
-.alert { margin:12px 16px; background:rgba(255,69,58,.15); border:1px solid rgba(255,69,58,.3); border-radius:var(–r2); padding:14px; display:flex; gap:10px; align-items:center; }
-.alert-icon { font-size:20px; flex-shrink:0; }
-.alert-text { font-size:13px; color:#ff453a; line-height:1.5; font-weight:500; }
-
-/* CATEGORY ROWS */
-.cat-row { padding:12px 16px; display:flex; align-items:center; gap:12px; border-bottom:1px solid var(–sep); }
-.cat-row:last-child { border-bottom:none; }
-.cat-icon-wrap { width:36px; height:36px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; }
-.cat-info { flex:1; }
-.cat-name { font-size:15px; font-weight:500; }
-.cat-who { font-size:12px; color:var(–text2); margin-top:1px; }
-.cat-amount { font-size:15px; font-weight:600; text-align:right; }
-.cat-pct { font-size:11px; color:var(–text2); text-align:right; margin-top:1px; }
-
-/* BADGES */
-.badge { display:inline-block; padding:2px 8px; border-radius:20px; font-size:11px; font-weight:600; }
-.b-marco { background:rgba(10,132,255,.2); color:#0a84ff; }
-.b-fabiola { background:rgba(255,55,95,.2); color:#ff375f; }
-.b-split { background:rgba(48,209,88,.2); color:#30d158; }
-.b-ext { background:rgba(255,255,255,.1); color:var(–text2); }
-
-/* AJUSTES */
-.adj-item { padding:14px 16px; display:flex; align-items:center; gap:12px; border-bottom:1px solid var(–sep); }
-.adj-item:last-child { border-bottom:none; }
-.adj-left { flex:1; }
-.adj-desc { font-size:15px; font-weight:500; }
-.adj-meta { font-size:12px; color:var(–text2); margin-top:2px; }
-.adj-amount { font-size:15px; font-weight:600; margin-right:12px; }
-.adj-btn { width:32px; height:32px; border-radius:50%; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:16px; transition:all .15s; }
-.btn-edit { background:rgba(10,132,255,.15); color:#0a84ff; }
-.btn-who { background:rgba(48,209,88,.15); color:#30d158; }
-
-/* MODAL */
-.modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.6); backdrop-filter:blur(10px); z-index:200; display:none; align-items:flex-end; }
-.modal-overlay.open { display:flex; animation:fadeIn .2s ease; }
-@keyframes fadeIn { from{opacity:0} to{opacity:1} }
-.modal { background:var(–bg2); border-radius:20px 20px 0 0; width:100%; padding:20px; padding-bottom:calc(20px + env(safe-area-inset-bottom)); animation:slideUp .3s ease; }
-@keyframes slideUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
-.modal-handle { width:36px; height:4px; background:var(–bg4); border-radius:2px; margin:0 auto 20px; }
-.modal-title { font-size:20px; font-weight:700; margin-bottom:16px; }
-.modal-option { display:flex; align-items:center; gap:14px; padding:14px; background:var(–bg3); border-radius:var(–r2); margin-bottom:8px; cursor:pointer; border:none; width:100%; color:var(–text); text-align:left; transition:opacity .15s; }
-.modal-option:active { opacity:.7; }
-.modal-option-icon { font-size:22px; }
-.modal-option-label { font-size:16px; font-weight:500; }
-.modal-cancel { width:100%; padding:14px; background:var(–bg3); border-radius:var(–r2); border:none; color:var(–blue); font-size:16px; font-weight:600; cursor:pointer; margin-top:4px; }
-
-/* META */
-.meta-row { padding:14px 16px; display:flex; align-items:center; gap:14px; border-bottom:1px solid var(–sep); }
-.meta-row:last-child { border-bottom:none; }
-.meta-circle { width:32px; height:32px; border-radius:50%; background:rgba(48,209,88,.15); color:#30d158; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; flex-shrink:0; }
-.meta-text { font-size:14px; color:var(–text2); line-height:1.5; flex:1; }
-.meta-text strong { color:var(–text); }
-
-/* IMPORT */
-.import-box { margin:0 16px; border:2px dashed var(–sep); border-radius:var(–r); padding:32px; text-align:center; cursor:pointer; transition:border-color .2s; }
-.import-box:active { border-color:var(–blue); }
-.import-icon { font-size:40px; margin-bottom:12px; }
-.import-title { font-size:17px; font-weight:600; margin-bottom:6px; }
-.import-sub { font-size:14px; color:var(–text2); }
-
-/* CHART */
-.chart-wrap { padding:16px; }
-canvas { max-height:180px; }
-
-/* LIST HEADER */
-.list-header { padding:8px 16px; font-size:13px; font-weight:600; color:var(–text2); text-transform:uppercase; letter-spacing:.5px; background:rgba(255,255,255,.03); }
-
-/* TOGGLE */
-.toggle-row { padding:12px 16px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(–sep); }
-.toggle-row:last-child { border-bottom:none; }
-.toggle-label { font-size:15px; }
-.toggle { width:51px; height:31px; background:var(–bg4); border-radius:15.5px; position:relative; cursor:pointer; transition:background .2s; border:none; }
-.toggle.on { background:var(–green); }
-.toggle-thumb { position:absolute; top:2px; left:2px; width:27px; height:27px; border-radius:50%; background:#fff; transition:left .2s; box-shadow:0 2px 4px rgba(0,0,0,.3); }
-.toggle.on .toggle-thumb { left:22px; }
-
-/* SCROLL HELPERS */
-::-webkit-scrollbar { display:none; }
-
-- { -webkit-overflow-scrolling:touch; }
-
-/* NOTIFICATION DOT */
-.notif { width:8px; height:8px; background:var(–red); border-radius:50%; position:absolute; top:2px; right:8px; }
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);backdrop-filter:blur(12px);z-index:200;display:none;align-items:flex-end;}
+.modal-overlay.open{display:flex;animation:mfade .2s ease;}
+@keyframes mfade{from{opacity:0}to{opacity:1}}
+.modal{background:#1c1c1e;border-radius:20px 20px 0 0;width:100%;padding:0 16px calc(16px + env(safe-area-inset-bottom));animation:mslide .3s cubic-bezier(.32,1,.23,1);}
+@keyframes mslide{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal-handle{width:36px;height:4px;background:var(–bg4);border-radius:2px;margin:12px auto 16px;}
+.modal-title{font-size:18px;font-weight:700;margin-bottom:4px;padding:0 4px;}
+.modal-desc{font-size:13px;color:var(–text2);margin-bottom:16px;padding:0 4px;}
+.modal-sec{font-size:12px;color:var(–text2);font-weight:600;text-transform:uppercase;letter-spacing:.8px;margin:14px 0 8px;padding:0 4px;}
+.modal-opt{display:flex;align-items:center;gap:14px;padding:14px;background:var(–bg3);border-radius:var(–r2);margin-bottom:8px;cursor:pointer;border:none;width:100%;color:var(–text);text-align:left;}
+.modal-opt:active{opacity:.7;}
+.modal-opt-icon{font-size:20px;}
+.modal-opt-label{font-size:15px;font-weight:500;flex:1;}
+.modal-check{font-size:18px;color:var(–blue);}
+.cat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:4px;}
+.cat-btn{padding:10px 6px;background:var(–bg3);border-radius:var(–r2);border:none;color:var(–text);cursor:pointer;text-align:center;}
+.cat-btn.sel{background:rgba(10,132,255,.2);border:1px solid var(–blue);}
+.cat-btn-icon{font-size:18px;margin-bottom:3px;}
+.cat-btn-lbl{font-size:9px;color:var(–text2);}
+.modal-save{width:100%;padding:15px;background:var(–blue);border-radius:var(–r2);border:none;color:#fff;font-size:16px;font-weight:600;cursor:pointer;margin-top:4px;}
+.modal-cancel{width:100%;padding:15px;background:var(–bg3);border-radius:var(–r2);border:none;color:var(–blue);font-size:16px;font-weight:600;cursor:pointer;margin-top:8px;}
+::-webkit-scrollbar{display:none;}
 </style>
 
 </head>
 <body>
 <div class="app">
-
-  <!-- STATUS BAR -->
-
   <div class="status-bar">
-    <span id="time-display">9:41</span>
-    <span>Finanzas Corona</span>
+    <span id="clock">9:41</span>
+    <span style="font-size:12px;color:var(--text2)">Finanzas Corona</span>
     <span>●●●</span>
   </div>
-
-  <!-- SCREENS -->
 
   <div class="screens">
 
 ```
-<!-- ═══ INICIO ═══ -->
+<!-- INICIO -->
 <div class="screen active" id="s-inicio">
-  <div class="hero">
-    <div class="hero-label">DEUDA TOTAL EXIGIBLE</div>
-    <div class="hero-amount" style="color:#ff453a">$87,093</div>
-    <div class="hero-sub">+ $114k MSI · Corte Abr 2026</div>
+  <div class="page-header"><div class="page-title">Inicio</div><div class="page-sub">Abr 2026 · 3 tarjetas</div></div>
+  <div class="hero-block">
+    <div class="hero-eye">Deuda total exigible</div>
+    <div class="hero-num" style="color:var(--red)">$87,093</div>
+    <div class="hero-cap">+ $114k MSI pendiente Banamex</div>
   </div>
-
-  <div class="alert">
-    <div class="alert-icon">⚠️</div>
-    <div class="alert-text">2 pagos vencidos — Banamex e Invex vencieron el 27 Abr. Paga hoy para evitar intereses.</div>
+  <div class="alert-bar"><div class="alert-icon">⚠️</div><div class="alert-text">Banamex e Invex vencieron el 27 Abr. Paga hoy para evitar intereses moratorios.</div></div>
+  <div class="stat-grid">
+    <div class="stat-tile"><div class="st-icon">💸</div><div class="st-val" style="color:var(--red)">$12,500</div><div class="st-label">Pago mínimo total</div></div>
+    <div class="stat-tile"><div class="st-icon">📅</div><div class="st-val" style="color:var(--green)">18 May</div><div class="st-label">Próx. vencimiento Amex</div></div>
+    <div class="stat-tile"><div class="st-icon">🏠</div><div class="st-val" style="color:var(--blue)">$86,490</div><div class="st-label">Ingreso neto hogar</div></div>
+    <div class="stat-tile"><div class="st-icon">📊</div><div class="st-val" style="color:var(--orange)">87%</div><div class="st-label">Ingreso comprometido</div></div>
   </div>
-
-  <div class="quick-stats">
-    <div class="stat-card">
-      <div class="stat-icon">🏦</div>
-      <div class="stat-val" style="color:#ff453a">$12,500</div>
-      <div class="stat-label">Pago mínimo total</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-icon">📅</div>
-      <div class="stat-val" style="color:#30d158">18 Mayo</div>
-      <div class="stat-label">Próx. vencimiento</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-icon">💰</div>
-      <div class="stat-val" style="color:#0a84ff">$86,490</div>
-      <div class="stat-label">Ingreso hogar</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-icon">📊</div>
-      <div class="stat-val" style="color:#ff9f0a">87%</div>
-      <div class="stat-label">Comprometido</div>
-    </div>
-  </div>
-
-  <div class="section-header">
-    <div class="section-title">Resumen</div>
-    <div class="section-sub">Mar–Abr 2026</div>
-  </div>
-
+  <div class="sec-hd"><div class="sec-title">Resumen rápido</div></div>
   <div class="card">
-    <div class="card-row">
-      <div class="card-label">Gasto total período</div>
-      <div class="card-value">$57,034</div>
-    </div>
-    <div class="card-row">
-      <div class="card-label">Libre Marco</div>
-      <div class="card-value" style="color:#ff453a">-$2,623</div>
-    </div>
-    <div class="card-row">
-      <div class="card-label">Libre Fabiola</div>
-      <div class="card-value" style="color:#30d158">+$7,740</div>
-    </div>
-    <div class="card-row">
-      <div class="card-label">Vales de despensa</div>
-      <div class="card-value" style="color:#30d158">$9,496</div>
-    </div>
-    <div class="card-row">
-      <div class="card-label">INFONAVIT mensual</div>
-      <div class="card-value">$21,903</div>
-    </div>
-  </div>
-
-  <div class="section-header">
-    <div class="section-title">Pagos próximos</div>
-  </div>
-
-  <div class="card">
-    <div class="card-row">
-      <div>
-        <div style="font-size:15px;font-weight:500">Amex Platinum</div>
-        <div style="font-size:12px;color:var(--text2)">Vence 18 Mayo 2026</div>
-      </div>
-      <div style="text-align:right">
-        <div style="font-size:17px;font-weight:700;color:#c8973a">$45,082</div>
-        <div style="font-size:11px;color:var(--green)">Al corriente ✓</div>
-      </div>
-    </div>
-    <div class="card-row">
-      <div>
-        <div style="font-size:15px;font-weight:500">Banamex Oro</div>
-        <div style="font-size:12px;color:#ff453a">Venció 27 Abr ⚠</div>
-      </div>
-      <div style="text-align:right">
-        <div style="font-size:17px;font-weight:700;color:#ff453a">$35,129</div>
-        <div style="font-size:11px;color:var(--text2)">Mín: $5,770</div>
-      </div>
-    </div>
-    <div class="card-row">
-      <div>
-        <div style="font-size:15px;font-weight:500">Invex Volaris</div>
-        <div style="font-size:12px;color:#ff453a">Venció 27 Abr ⚠</div>
-      </div>
-      <div style="text-align:right">
-        <div style="font-size:17px;font-weight:700;color:#bf5af2">$6,882</div>
-        <div style="font-size:11px;color:var(--text2)">Mín: $1,730</div>
-      </div>
+    <div class="crow"><span class="crow-label">Gasto total período</span><span class="crow-val">$57,034</span></div>
+    <div class="crow"><span class="crow-label">Flujo libre Marco</span><span class="crow-val" style="color:var(--red)">-$2,623</span></div>
+    <div class="crow"><span class="crow-label">Flujo libre Fabiola</span><span class="crow-val" style="color:var(--green)">+$7,740</span></div>
+    <div class="crow"><span class="crow-label">Vales de despensa</span><span class="crow-val" style="color:var(--green)">$9,496</span></div>
+    <div class="crow" style="background:rgba(48,209,88,.05)">
+      <div class="crow-l"><div class="crow-label" style="font-weight:700">Fabiola transfiere a Marco</div><div class="crow-sub">Este mes</div></div>
+      <span class="crow-val" style="color:var(--green);font-size:18px">$24,623</span>
     </div>
   </div>
 </div>
 
-<!-- ═══ TARJETAS ═══ -->
+<!-- TARJETAS -->
 <div class="screen" id="s-tarjetas">
-  <div class="section-header">
-    <div class="section-title">Tarjetas</div>
+  <div class="page-header"><div class="page-title">Tarjetas</div><div class="page-sub">3 activas</div></div>
+  <div class="wallet" style="background:linear-gradient(135deg,#1c1408,#3a2808)">
+    <div class="w-badge wb-ok">18 Mayo ✓</div>
+    <div class="w-bank" style="color:var(--amex)">AMERICAN EXPRESS PLATINUM</div>
+    <div class="w-amount" style="color:var(--amex)">$45,082</div>
+    <div class="w-detail">Mín $5,000 · Personal Marco + Vacaciones Split 3MSI</div>
+    <div class="w-bar"><div class="w-bar-f" style="width:13.4%"></div></div>
+    <div class="w-bar-lb"><span>Usado $53,727</span><span>Límite $400,000</span></div>
+    <div class="w-num">····  ····  ····  71000</div>
   </div>
-
-  <!-- AMEX -->
-  <div class="wallet-card" style="background:linear-gradient(135deg,#1a1208,#3d2a0a)">
-    <div class="wc-badge ok">18 Mayo ✓</div>
-    <div class="wc-bank" style="color:#c8973a">AMERICAN EXPRESS</div>
-    <div class="wc-amount" style="color:#c8973a">$45,082</div>
-    <div class="wc-min">Mínimo $5,000 · Sin intereses $45,082</div>
-    <div class="progress-wrap">
-      <div class="prog"><div class="prog-f" style="width:13.4%"></div></div>
-      <div class="prog-labels"><span>Usado $53,727</span><span>Límite $400k</span></div>
-    </div>
-    <div class="wc-num">····  ····  ····  71000</div>
+  <div class="wallet" style="background:linear-gradient(135deg,#1c0808,#380808)">
+    <div class="w-badge wb-warn">⚠ Vencido</div>
+    <div class="w-bank" style="color:var(--banamex)">BANAMEX ORO</div>
+    <div class="w-amount" style="color:var(--banamex)">$35,129</div>
+    <div class="w-detail">Mín $5,770 · Gastos de la casa · MSI $114,006</div>
+    <div class="w-bar"><div class="w-bar-f" style="width:32.3%"></div></div>
+    <div class="w-bar-lb"><span>Deuda total $149k</span><span>Límite $461,500</span></div>
+    <div class="w-num">5499  4905  6046  3887</div>
   </div>
-
-  <!-- BANAMEX -->
-  <div class="wallet-card" style="background:linear-gradient(135deg,#1a0808,#3d0a0a)">
-    <div class="wc-badge warn">⚠ Vencido</div>
-    <div class="wc-bank" style="color:#ff453a">BANAMEX ORO</div>
-    <div class="wc-amount" style="color:#ff453a">$35,129</div>
-    <div class="wc-min">Mínimo $5,770 · MSI pendiente $114,006</div>
-    <div class="progress-wrap">
-      <div class="prog"><div class="prog-f" style="width:32.3%"></div></div>
-      <div class="prog-labels"><span>Deuda total $149k</span><span>Límite $461k</span></div>
-    </div>
-    <div class="wc-num">5499  4905  6046  3887</div>
+  <div class="wallet" style="background:linear-gradient(135deg,#0e0818,#1c1038)">
+    <div class="w-badge wb-warn">⚠ Vencido</div>
+    <div class="w-bank" style="color:var(--invex)">INVEX VOLARIS PLATINO</div>
+    <div class="w-amount" style="color:var(--invex)">$6,882</div>
+    <div class="w-detail">Mín $1,730 · Solo vuelos · Split 65/35</div>
+    <div class="w-bar"><div class="w-bar-f" style="width:4.9%"></div></div>
+    <div class="w-bar-lb"><span>Usado $6,882</span><span>Límite $138,400</span></div>
+    <div class="w-num">····  ····  ····  3870</div>
   </div>
-
-  <!-- INVEX -->
-  <div class="wallet-card" style="background:linear-gradient(135deg,#0f0820,#1e1040)">
-    <div class="wc-badge warn">⚠ Vencido</div>
-    <div class="wc-bank" style="color:#bf5af2">INVEX VOLARIS</div>
-    <div class="wc-amount" style="color:#bf5af2">$6,882</div>
-    <div class="wc-min">Mínimo $1,730 · Vuelos Split 65/35</div>
-    <div class="progress-wrap">
-      <div class="prog"><div class="prog-f" style="width:4.9%"></div></div>
-      <div class="prog-labels"><span>Usado $6,882</span><span>Límite $138k</span></div>
-    </div>
-    <div class="wc-num">····  ····  ····  3870</div>
-  </div>
-
-  <div class="section-header">
-    <div class="section-title">MSI Activos</div>
-  </div>
-
+  <div class="sec-hd"><div class="sec-title">MSI Activos</div><div class="sec-sub">$122,651 total</div></div>
   <div class="card">
-    <div class="list-header">Banamex — $114,006 pendiente</div>
-    <div class="card-row">
-      <div><div style="font-size:14px;font-weight:500">Macstore (3 planes)</div><div style="font-size:12px;color:var(--text2)">Cuotas 4/24 y 5/24</div></div>
-      <div style="text-align:right"><div style="font-size:15px;font-weight:600">$87,562</div><div style="font-size:11px;color:var(--text2)">pendiente</div></div>
-    </div>
-    <div class="card-row">
-      <div><div style="font-size:14px;font-weight:500">Dentalia</div><div style="font-size:12px;color:var(--text2)">Cuota 3/6</div></div>
-      <div style="text-align:right"><div style="font-size:15px;font-weight:600">$5,895</div><div style="font-size:11px;color:var(--text2)">pendiente</div></div>
-    </div>
-    <div class="card-row">
-      <div><div style="font-size:14px;font-weight:500">GNP Seguro</div><div style="font-size:12px;color:var(--text2)">Cuota 11/12</div></div>
-      <div style="text-align:right"><div style="font-size:15px;font-weight:600">$1,316</div><div style="font-size:11px;color:var(--text2)">pendiente</div></div>
-    </div>
-    <div class="card-row">
-      <div><div style="font-size:14px;font-weight:500">MercadoLibre</div><div style="font-size:12px;color:var(--text2)">Cuota 1/3</div></div>
-      <div style="text-align:right"><div style="font-size:15px;font-weight:600">$1,066</div><div style="font-size:11px;color:var(--text2)">pendiente</div></div>
-    </div>
-    <div class="list-header">Amex — $8,645 pendiente</div>
-    <div class="card-row">
-      <div><div style="font-size:14px;font-weight:500">Airbnb Bahía (nuevo)</div><div style="font-size:12px;color:var(--text2)">Cuota 1/3</div></div>
-      <div style="text-align:right"><div style="font-size:15px;font-weight:600">$7,098</div><div style="font-size:11px;color:var(--text2)">pendiente</div></div>
-    </div>
-    <div class="card-row">
-      <div><div style="font-size:14px;font-weight:500">Amazon MSI</div><div style="font-size:12px;color:var(--text2)">Cuota 1/3</div></div>
-      <div style="text-align:right"><div style="font-size:15px;font-weight:600">$1,547</div><div style="font-size:11px;color:var(--text2)">pendiente</div></div>
-    </div>
+    <div class="lhd">Banamex — $114,006</div>
+    <div class="crow"><div class="crow-l"><div class="crow-label">Macstore (3 planes)</div><div class="crow-sub">Cuotas 4/24 y 5/24 · Split</div></div><div class="crow-r"><div class="crow-val">$87,562</div><div class="crow-hint">~20 meses</div></div></div>
+    <div class="crow"><div class="crow-l"><div class="crow-label">Dentalia</div><div class="crow-sub">Cuota 3/6 · Split</div></div><div class="crow-r"><div class="crow-val">$5,895</div><div class="crow-hint">3 meses</div></div></div>
+    <div class="crow"><div class="crow-l"><div class="crow-label">GNP Seguro</div><div class="crow-sub">Cuota 11/12 · Split</div></div><div class="crow-r"><div class="crow-val">$1,316</div><div class="crow-hint">1 mes</div></div></div>
+    <div class="crow"><div class="crow-l"><div class="crow-label">MercadoLibre</div><div class="crow-sub">Cuota 1/3 · Split</div></div><div class="crow-r"><div class="crow-val">$1,066</div><div class="crow-hint">2 meses</div></div></div>
+    <div class="lhd">Amex — $8,645</div>
+    <div class="crow"><div class="crow-l"><div class="crow-label">Airbnb Bahía (vacaciones)</div><div class="crow-sub">Cuota 1/3 · Split 65/35</div></div><div class="crow-r"><div class="crow-val">$7,098</div><div class="crow-hint">2 meses</div></div></div>
+    <div class="crow"><div class="crow-l"><div class="crow-label">Amazon MSI</div><div class="crow-sub">Cuota 1/3 · Split</div></div><div class="crow-r"><div class="crow-val">$1,547</div><div class="crow-hint">2 meses</div></div></div>
   </div>
 </div>
 
-<!-- ═══ SPLIT ═══ -->
+<!-- SPLIT -->
 <div class="screen" id="s-split">
-  <div class="section-header">
-    <div class="section-title">Split</div>
-    <div class="section-sub">65% · 35%</div>
+  <div class="page-header"><div class="page-title">Split</div><div class="page-sub">Marco 65% · Fabiola 35%</div></div>
+
+  <div class="tf-hero">
+    <div class="tf-eye">Fabiola transfiere a Marco</div>
+    <div class="tf-amount">$24,623</div>
+    <div class="tf-sub">Depósito mensual · este mes</div>
+    <hr class="tf-divider">
+    <div class="tf-row"><span class="tf-row-label">35% Split Banamex (casa)</span><span class="tf-row-val">$5,154</span></div>
+    <div class="tf-row"><span class="tf-row-label">35% Split Amex (vacaciones)</span><span class="tf-row-val">$6,133</span></div>
+    <div class="tf-row"><span class="tf-row-label">35% Split Invex (vuelos)</span><span class="tf-row-val">$569</span></div>
+    <div class="tf-row"><span class="tf-row-label">35% INFONAVIT ($21,903)</span><span class="tf-row-val">$7,666</span></div>
+    <div class="tf-total"><span class="tf-total-label">Total</span><span class="tf-total-val">$24,623</span></div>
   </div>
 
-  <!-- MARCO -->
-  <div class="person-card" style="background:var(--bg2)">
-    <div class="person-header">
-      <div class="person-avatar" style="background:rgba(10,132,255,.15)">👨</div>
-      <div>
-        <div class="person-name">Marco</div>
-        <div class="person-income">$56,490 neto + $8,296 vales</div>
-      </div>
-      <div class="person-balance">
-        <div class="balance-val" style="color:#ff453a">-$2,623</div>
-        <div class="balance-label">flujo libre</div>
-      </div>
-    </div>
-    <div class="flow-item"><span class="flow-name">Renta (exclusiva)</span><span class="flow-val" style="color:#ff453a">-$18,000</span></div>
-    <div class="flow-item"><span class="flow-name">INFONAVIT total</span><span class="flow-val" style="color:#ff453a">-$21,903</span></div>
-    <div class="flow-item"><span class="flow-name">Parte Fabiola INFONAVIT (35%)</span><span class="flow-val" style="color:#30d158">+$7,666</span></div>
-    <div class="flow-item"><span class="flow-name">65% gastos Split</span><span class="flow-val" style="color:#ff453a">-$24,266</span></div>
-    <div class="flow-item"><span class="flow-name">Gastos personales</span><span class="flow-val" style="color:#ff453a">-$16,943</span></div>
-    <div class="flow-item"><span class="flow-name">Gasolina</span><span class="flow-val" style="color:#ff453a">-$5,952</span></div>
-    <div class="flow-item"><span class="flow-name">Vales (cubren super)</span><span class="flow-val" style="color:#30d158">+$8,296</span></div>
-    <div class="flow-item"><span class="flow-name">Importaciones</span><span class="flow-val" style="color:#ff453a">-$2,258</span></div>
-    <div class="flow-total">
-      <span class="flow-total-label">Flujo libre</span>
-      <span class="flow-total-val" style="color:#ff453a">-$2,623</span>
-    </div>
-  </div>
+  <div class="note note-info">ℹ️ Fabiola paga por separado (no entra en transferencia): señora aseo $2,000 efectivo · SIAPA · CFE · IZZI · Spotify · Telcel · comida perros</div>
 
-  <div style="padding:8px 16px">
-    <div style="background:rgba(255,69,58,.1);border:1px solid rgba(255,69,58,.2);border-radius:10px;padding:12px;font-size:13px;color:#ff453a;line-height:1.5">
-      ⚠️ Sin el viaje a Bahía Banderas ($9,355 tu parte), el flujo libre sería <strong>+$6,732</strong>
+  <div class="sec-hd"><div class="sec-title">Marco · 65%</div></div>
+  <div class="person-card">
+    <div class="person-hd">
+      <div class="person-av" style="background:rgba(10,132,255,.15)">👨</div>
+      <div><div class="person-name">Marco Antonio</div><div class="person-inc">$56,490 neto · $8,296 vales</div></div>
+      <div class="person-libre"><div class="libre-val" style="color:var(--red)">-$2,623</div><div class="libre-lbl">flujo libre</div></div>
     </div>
+    <div class="frow"><span class="frow-label">Ingreso neto</span><span class="frow-val" style="color:var(--green)">+$56,490</span></div>
+    <div class="frow"><span class="frow-label">+ Transferencia de Fabiola</span><span class="frow-val" style="color:var(--green)">+$24,623</span></div>
+    <div class="frow"><span class="frow-label">− Renta (exclusiva)</span><span class="frow-val" style="color:var(--red)">-$18,000</span></div>
+    <div class="frow"><span class="frow-label">− INFONAVIT (nómina)</span><span class="frow-val" style="color:var(--red)">-$21,903</span></div>
+    <div class="frow"><span class="frow-label">− 65% Split tarjetas</span><span class="frow-val" style="color:var(--red)">-$24,266</span></div>
+    <div class="frow"><span class="frow-label">− Gasolina</span><span class="frow-val" style="color:var(--red)">-$5,952</span></div>
+    <div class="frow"><span class="frow-label">− Personal Marco</span><span class="frow-val" style="color:var(--red)">-$11,687</span></div>
+    <div class="frow"><span class="frow-label">+ Vales (cubren super)</span><span class="frow-val" style="color:var(--green)">+$8,296</span></div>
+    <div class="ftotal"><span class="ftotal-lbl">Flujo libre</span><span class="ftotal-val" style="color:var(--red)">-$2,623</span></div>
   </div>
+  <div class="note note-warn">⚠ Sin viaje Bahía ($9,355 tu parte) → flujo libre sería <strong>+$6,732</strong></div>
 
-  <!-- FABIOLA -->
-  <div class="person-card" style="background:var(--bg2);margin-top:8px">
-    <div class="person-header">
-      <div class="person-avatar" style="background:rgba(255,55,95,.15)">👩</div>
-      <div>
-        <div class="person-name">Fabiola</div>
-        <div class="person-income">$30,000 neto + $1,200 vales</div>
-      </div>
-      <div class="person-balance">
-        <div class="balance-val" style="color:#30d158">+$7,740</div>
-        <div class="balance-label">flujo libre</div>
-      </div>
+  <div class="sec-hd"><div class="sec-title">Fabiola · 35%</div></div>
+  <div class="person-card">
+    <div class="person-hd">
+      <div class="person-av" style="background:rgba(255,55,95,.15)">👩</div>
+      <div><div class="person-name">Fabiola</div><div class="person-inc">$30,000 neto · $1,200 vales</div></div>
+      <div class="person-libre"><div class="libre-val" style="color:var(--green)">+$7,740</div><div class="libre-lbl">flujo libre</div></div>
     </div>
-    <div class="flow-item"><span class="flow-name">INFONAVIT (35% de $21,903)</span><span class="flow-val" style="color:#ff453a">-$7,666</span></div>
-    <div class="flow-item"><span class="flow-name">Señora aseo</span><span class="flow-val" style="color:#ff453a">-$2,000</span></div>
-    <div class="flow-item"><span class="flow-name">SIAPA + Spotify + IZZI</span><span class="flow-val" style="color:#ff453a">-$1,156</span></div>
-    <div class="flow-item"><span class="flow-name">Telefonía</span><span class="flow-val" style="color:#ff453a">-$565</span></div>
-    <div class="flow-item"><span class="flow-name">35% gastos Split</span><span class="flow-val" style="color:#ff453a">-$13,067</span></div>
-    <div class="flow-item"><span class="flow-name">Gastos personales</span><span class="flow-val" style="color:#ff453a">-$2,758</span></div>
-    <div class="flow-item"><span class="flow-name">Mascotas</span><span class="flow-val" style="color:#ff453a">-$1,376</span></div>
-    <div class="flow-item"><span class="flow-name">Vales (cubren super)</span><span class="flow-val" style="color:#30d158">+$1,200</span></div>
-    <div class="flow-total">
-      <span class="flow-total-label">Flujo libre</span>
-      <span class="flow-total-val" style="color:#30d158">+$7,740</span>
-    </div>
+    <div class="frow"><span class="frow-label">Ingreso neto</span><span class="frow-val" style="color:var(--green)">+$30,000</span></div>
+    <div class="frow"><span class="frow-label">− Transferencia a Marco</span><span class="frow-val" style="color:var(--red)">-$24,623</span></div>
+    <div class="frow"><span class="frow-label">− Telefonía + Servicios casa</span><span class="frow-val" style="color:var(--red)">-$1,639</span></div>
+    <div class="frow"><span class="frow-label">− Mascotas / comida perros</span><span class="frow-val" style="color:var(--red)">-$1,376</span></div>
+    <div class="frow"><span class="frow-label">− Personal Fabiola</span><span class="frow-val" style="color:var(--red)">-$2,758</span></div>
+    <div class="frow"><span class="frow-label">− Señora aseo (efectivo)</span><span class="frow-val" style="color:var(--red)">-$2,000</span></div>
+    <div class="frow"><span class="frow-label">+ Vales (cubren super)</span><span class="frow-val" style="color:var(--green)">+$1,200</span></div>
+    <div class="ftotal"><span class="ftotal-lbl">Flujo libre</span><span class="ftotal-val" style="color:var(--green)">+$7,740</span></div>
   </div>
-
-  <div style="padding:8px 16px 0">
-    <div style="background:rgba(48,209,88,.08);border:1px solid rgba(48,209,88,.2);border-radius:10px;padding:12px;font-size:13px;color:#30d158;line-height:1.5">
-      ✓ Recomendado: Fabiola destina $3,000/mes a ahorro conjunto → meta $15k en 5 meses
-    </div>
-  </div>
+  <div class="note note-ok">✓ Con $3,000/mes a ahorro → meta $15,000 en 5 meses</div>
 </div>
 
-<!-- ═══ GASTOS ═══ -->
+<!-- GASTOS -->
 <div class="screen" id="s-gastos">
-  <div class="section-header">
-    <div class="section-title">Gastos</div>
-    <div class="section-sub">$57,034 total</div>
-  </div>
-
-  <div class="chart-wrap">
-    <canvas id="chartGastos"></canvas>
-  </div>
-
+  <div class="page-header"><div class="page-title">Gastos</div><div class="page-sub">$57,034 · Mar–Abr 2026</div></div>
+  <div style="padding:16px 16px 8px"><canvas id="chartG"></canvas></div>
   <div class="card">
-    <div class="list-header">Por categoría</div>
-    <div class="cat-row">
-      <div class="cat-icon-wrap" style="background:rgba(255,159,10,.15)">🏖️</div>
-      <div class="cat-info"><div class="cat-name">Vacaciones</div><div class="cat-who"><span class="badge b-split">Split</span></div></div>
-      <div><div class="cat-amount">$14,409</div><div class="cat-pct">25.3%</div></div>
-    </div>
-    <div class="cat-row">
-      <div class="cat-icon-wrap" style="background:rgba(10,132,255,.15)">🏠</div>
-      <div class="cat-info"><div class="cat-name">Renta</div><div class="cat-who"><span class="badge b-marco">Marco</span></div></div>
-      <div><div class="cat-amount">$18,000</div><div class="cat-pct">31.6%</div></div>
-    </div>
-    <div class="cat-row">
-      <div class="cat-icon-wrap" style="background:rgba(48,209,88,.15)">🛒</div>
-      <div class="cat-info"><div class="cat-name">Supermercado</div><div class="cat-who"><span class="badge b-split">Split</span> · cubierto por vales</div></div>
-      <div><div class="cat-amount">$9,660</div><div class="cat-pct">16.9%</div></div>
-    </div>
-    <div class="cat-row">
-      <div class="cat-icon-wrap" style="background:rgba(255,69,58,.15)">⛽</div>
-      <div class="cat-info"><div class="cat-name">Gasolina</div><div class="cat-who"><span class="badge b-marco">Marco</span></div></div>
-      <div><div class="cat-amount">$5,952</div><div class="cat-pct">10.4%</div></div>
-    </div>
-    <div class="cat-row">
-      <div class="cat-icon-wrap" style="background:rgba(191,90,242,.15)">💻</div>
-      <div class="cat-info"><div class="cat-name">Tecnología</div><div class="cat-who"><span class="badge b-split">Split</span></div></div>
-      <div><div class="cat-amount">$3,700</div><div class="cat-pct">6.5%</div></div>
-    </div>
-    <div class="cat-row">
-      <div class="cat-icon-wrap" style="background:rgba(255,55,95,.15)">💊</div>
-      <div class="cat-info"><div class="cat-name">Farmacia</div><div class="cat-who"><span class="badge b-split">Split</span></div></div>
-      <div><div class="cat-amount">$3,138</div><div class="cat-pct">5.5%</div></div>
-    </div>
-    <div class="cat-row">
-      <div class="cat-icon-wrap" style="background:rgba(90,200,250,.15)">🍽️</div>
-      <div class="cat-info"><div class="cat-name">Restaurantes</div><div class="cat-who"><span class="badge b-split">Split</span></div></div>
-      <div><div class="cat-amount">$3,207</div><div class="cat-pct">5.6%</div></div>
-    </div>
-    <div class="cat-row">
-      <div class="cat-icon-wrap" style="background:rgba(255,214,10,.15)">🛍️</div>
-      <div class="cat-info"><div class="cat-name">Compras online</div><div class="cat-who"><span class="badge b-marco">Marco</span></div></div>
-      <div><div class="cat-amount">$5,089</div><div class="cat-pct">8.9%</div></div>
-    </div>
-    <div class="cat-row">
-      <div class="cat-icon-wrap" style="background:rgba(48,209,88,.15)">🐾</div>
-      <div class="cat-info"><div class="cat-name">Mascotas</div><div class="cat-who"><span class="badge b-fabiola">Fabiola</span></div></div>
-      <div><div class="cat-amount">$1,816</div><div class="cat-pct">3.2%</div></div>
-    </div>
-    <div class="cat-row">
-      <div class="cat-icon-wrap" style="background:rgba(255,159,10,.15)">📱</div>
-      <div class="cat-info"><div class="cat-name">Telefonía e internet</div><div class="cat-who"><span class="badge b-fabiola">Fabiola</span></div></div>
-      <div><div class="cat-amount">$1,074</div><div class="cat-pct">1.9%</div></div>
-    </div>
+    <div class="lhd">Por categoría</div>
+    <div class="cat-row"><div class="cat-ic" style="background:rgba(255,159,10,.15)">🏖️</div><div style="flex:1"><div class="cat-name">Vacaciones (Bahía)</div><div class="cat-who"><span class="badge bs">Split</span> · Amex 3MSI extranjero</div></div><div class="cat-r"><div class="cat-amt">$14,409</div><div class="cat-pct">25.3%</div></div></div>
+    <div class="cat-row"><div class="cat-ic" style="background:rgba(10,132,255,.15)">🏠</div><div style="flex:1"><div class="cat-name">Renta</div><div class="cat-who"><span class="badge bm">Marco</span> · Transferencia dueña</div></div><div class="cat-r"><div class="cat-amt">$18,000</div><div class="cat-pct">31.6%</div></div></div>
+    <div class="cat-row"><div class="cat-ic" style="background:rgba(48,209,88,.15)">🛒</div><div style="flex:1"><div class="cat-name">Supermercado</div><div class="cat-who"><span class="badge bs">Split</span> · Cubierto por vales</div></div><div class="cat-r"><div class="cat-amt">$9,660</div><div class="cat-pct">16.9%</div></div></div>
+    <div class="cat-row"><div class="cat-ic" style="background:rgba(255,69,58,.15)">⛽</div><div style="flex:1"><div class="cat-name">Gasolina</div><div class="cat-who"><span class="badge bm">Marco</span> · Servicio La Corone y vars.</div></div><div class="cat-r"><div class="cat-amt">$5,952</div><div class="cat-pct">10.4%</div></div></div>
+    <div class="cat-row"><div class="cat-ic" style="background:rgba(191,90,242,.15)">💻</div><div style="flex:1"><div class="cat-name">Tecnología / Macstore</div><div class="cat-who"><span class="badge bs">Split</span> · Banamex MSI</div></div><div class="cat-r"><div class="cat-amt">$3,700</div><div class="cat-pct">6.5%</div></div></div>
+    <div class="cat-row"><div class="cat-ic" style="background:rgba(255,55,95,.15)">💊</div><div style="flex:1"><div class="cat-name">Farmacia</div><div class="cat-who"><span class="badge bs">Split</span> · Banamex</div></div><div class="cat-r"><div class="cat-amt">$3,138</div><div class="cat-pct">5.5%</div></div></div>
+    <div class="cat-row"><div class="cat-ic" style="background:rgba(90,200,250,.15)">🍽️</div><div style="flex:1"><div class="cat-name">Restaurantes / OXXO</div><div class="cat-who"><span class="badge bs">Split siempre</span></div></div><div class="cat-r"><div class="cat-amt">$3,207</div><div class="cat-pct">5.6%</div></div></div>
+    <div class="cat-row"><div class="cat-ic" style="background:rgba(255,214,10,.15)">🛍️</div><div style="flex:1"><div class="cat-name">Compras online</div><div class="cat-who"><span class="badge bm">Marco</span> · Amazon, Tenso, Samurai</div></div><div class="cat-r"><div class="cat-amt">$5,089</div><div class="cat-pct">8.9%</div></div></div>
+    <div class="cat-row"><div class="cat-ic" style="background:rgba(255,55,95,.15)">📱</div><div style="flex:1"><div class="cat-name">Telefonía + Servicios</div><div class="cat-who"><span class="badge bf">Fabiola</span> · Telcel, IZZI, SIAPA</div></div><div class="cat-r"><div class="cat-amt">$1,639</div><div class="cat-pct">2.9%</div></div></div>
+    <div class="cat-row"><div class="cat-ic" style="background:rgba(48,209,88,.15)">🐾</div><div style="flex:1"><div class="cat-name">Mascotas / comida perros</div><div class="cat-who"><span class="badge bf">Fabiola</span> · Super Carnic Martínez</div></div><div class="cat-r"><div class="cat-amt">$1,816</div><div class="cat-pct">3.2%</div></div></div>
   </div>
 </div>
 
-<!-- ═══ AJUSTES ═══ -->
+<!-- AJUSTES -->
 <div class="screen" id="s-ajustes">
-  <div class="section-header">
-    <div class="section-title">Ajustes</div>
+  <div class="page-header"><div class="page-title">Ajustes</div><div class="page-sub">Reclasifica · Edita · Importa</div></div>
+  <div class="import-zone" onclick="document.getElementById('jfile').click()">
+    <div class="iz-icon">📥</div>
+    <div class="iz-title">Importar nuevo período</div>
+    <div class="iz-sub">Toca para cargar JSON de Claude</div>
   </div>
-
-  <!-- IMPORT JSON -->
-  <div class="import-box" onclick="document.getElementById('json-input').click()">
-    <div class="import-icon">📥</div>
-    <div class="import-title">Importar nuevo período</div>
-    <div class="import-sub">Toca para cargar el JSON generado por Claude</div>
-  </div>
-  <input type="file" id="json-input" accept=".json" style="display:none" onchange="importJSON(event)">
-
-  <div style="padding:12px 16px 4px;font-size:13px;color:var(--text2)">Toca cualquier transacción para reclasificar</div>
-
-  <div class="card" style="margin-top:8px">
-    <div class="list-header">Transacciones del período</div>
-
-    <div class="adj-item" onclick="showModal('AIRBNB * HM2FP8ZR42','$10,647','split')">
-      <div class="adj-left">
-        <div class="adj-desc">Airbnb Bahía Banderas</div>
-        <div class="adj-meta"><span class="badge b-split">Split</span> · 🏖️ Vacaciones · Amex</div>
-      </div>
-      <div class="adj-amount">$10,647</div>
-      <div style="color:var(--text3);font-size:20px">›</div>
-    </div>
-
-    <div class="adj-item" onclick="showModal('PAYPAL *WALMART MX','$5,329','split')">
-      <div class="adj-left">
-        <div class="adj-desc">PayPal *Walmart MX</div>
-        <div class="adj-meta"><span class="badge b-split">Split</span> · 🛒 Super · Amex</div>
-      </div>
-      <div class="adj-amount">$5,329</div>
-      <div style="color:var(--text3);font-size:20px">›</div>
-    </div>
-
-    <div class="adj-item" onclick="showModal('TDA SERVICIO LA CORONE','$5,952','marco')">
-      <div class="adj-left">
-        <div class="adj-desc">TDA Servicio La Corone</div>
-        <div class="adj-meta"><span class="badge b-marco">Marco</span> · ⛽ Gasolina · Banamex</div>
-      </div>
-      <div class="adj-amount">$5,952</div>
-      <div style="color:var(--text3);font-size:20px">›</div>
-    </div>
-
-    <div class="adj-item" onclick="showModal('VOLARIS MOTO DEB 2','$5,256','ext')">
-      <div class="adj-left">
-        <div class="adj-desc">Volaris Moto Deb 2</div>
-        <div class="adj-meta"><span class="badge b-ext">Externo</span> · ✈️ Vuelo · Invex</div>
-      </div>
-      <div class="adj-amount">$5,256</div>
-      <div style="color:var(--text3);font-size:20px">›</div>
-    </div>
-
-    <div class="adj-item" onclick="showModal('MACSTORE (múltiples)','$3,700','split')">
-      <div class="adj-left">
-        <div class="adj-desc">Macstore (5 cargos MSI)</div>
-        <div class="adj-meta"><span class="badge b-split">Split</span> · 💻 Tecnología · Banamex</div>
-      </div>
-      <div class="adj-amount">$3,700</div>
-      <div style="color:var(--text3);font-size:20px">›</div>
-    </div>
-
-    <div class="adj-item" onclick="showModal('FARM DEL AHORRO','$2,898','split')">
-      <div class="adj-left">
-        <div class="adj-desc">Farmacia del Ahorro</div>
-        <div class="adj-meta"><span class="badge b-split">Split</span> · 💊 Farmacia · Banamex</div>
-      </div>
-      <div class="adj-amount">$2,898</div>
-      <div style="color:var(--text3);font-size:20px">›</div>
-    </div>
-
-    <div class="adj-item" onclick="showModal('SAMURAI JAPAN ONLINE','$2,258','marco')">
-      <div class="adj-left">
-        <div class="adj-desc">Samurai Japan Online</div>
-        <div class="adj-meta"><span class="badge b-marco">Marco</span> · 🌐 Importación · Banamex</div>
-      </div>
-      <div class="adj-amount">$2,258</div>
-      <div style="color:var(--text3);font-size:20px">›</div>
-    </div>
-
-    <div class="adj-item" onclick="showModal('ABTS SMXGDL','$1,860','split')">
-      <div class="adj-left">
-        <div class="adj-desc">ABTS SMXGDL (Suplementos)</div>
-        <div class="adj-meta"><span class="badge b-split">Split</span> · 💪 Suplementos · Banamex</div>
-      </div>
-      <div class="adj-amount">$1,860</div>
-      <div style="color:var(--text3);font-size:20px">›</div>
-    </div>
-
-  </div>
-
-  <div class="section-header">
-    <div class="section-title">Reglas activas</div>
-  </div>
-
+  <input type="file" id="jfile" accept=".json" style="display:none" onchange="importJSON(event)">
+  <div class="note note-info">Toca cualquier cargo para cambiar categoría o quién paga</div>
+  <div class="sec-hd"><div class="sec-title">Transacciones</div></div>
   <div class="card">
-    <div class="toggle-row">
-      <div class="toggle-label">Banamex → Split automático</div>
-      <button class="toggle on" onclick="this.classList.toggle('on')"><div class="toggle-thumb"></div></button>
-    </div>
-    <div class="toggle-row">
-      <div class="toggle-label">Amex MX → Personal Marco</div>
-      <button class="toggle on" onclick="this.classList.toggle('on')"><div class="toggle-thumb"></div></button>
-    </div>
-    <div class="toggle-row">
-      <div class="toggle-label">Amex Extranjero → Split</div>
-      <button class="toggle on" onclick="this.classList.toggle('on')"><div class="toggle-thumb"></div></button>
-    </div>
-    <div class="toggle-row">
-      <div class="toggle-label">Super Carnic → Mascotas Fabiola</div>
-      <button class="toggle on" onclick="this.classList.toggle('on')"><div class="toggle-thumb"></div></button>
-    </div>
-    <div class="toggle-row">
-      <div class="toggle-label">Telefonía → Personal Fabiola</div>
-      <button class="toggle on" onclick="this.classList.toggle('on')"><div class="toggle-thumb"></div></button>
-    </div>
-    <div class="toggle-row">
-      <div class="toggle-label">Restaurantes → Split siempre</div>
-      <button class="toggle on" onclick="this.classList.toggle('on')"><div class="toggle-thumb"></div></button>
-    </div>
-    <div class="toggle-row">
-      <div class="toggle-label">CFE → Fabiola (bimestral)</div>
-      <button class="toggle on" onclick="this.classList.toggle('on')"><div class="toggle-thumb"></div></button>
-    </div>
+    <div class="lhd">Amex · Vacaciones (Split)</div>
+    <div class="adj-row" onclick="openModal('Airbnb Bahía Banderas','$10,647','split','🏖️ Vacaciones')"><div style="flex:1"><div class="adj-desc">Airbnb Bahía Banderas</div><div class="adj-meta"><span class="badge bs">Split</span> · 🏖️ Vacaciones · 3MSI</div></div><div class="adj-amt">$10,647</div><div class="chev">›</div></div>
+    <div class="adj-row" onclick="openModal('Restaurantes Bahía (4)','$2,562','split','🍽️ Restaurante')"><div style="flex:1"><div class="adj-desc">Restaurantes Bahía (x4)</div><div class="adj-meta"><span class="badge bs">Split</span> · 🍽️ Restaurantes</div></div><div class="adj-amt">$2,562</div><div class="chev">›</div></div>
+    <div class="adj-row" onclick="openModal('*Litibus Sunsets','$1,208','split','🌅 Tour')"><div style="flex:1"><div class="adj-desc">*Litibus Sunsets</div><div class="adj-meta"><span class="badge bs">Split</span> · 🌅 Tour</div></div><div class="adj-amt">$1,208</div><div class="chev">›</div></div>
+    <div class="lhd">Amex · Personal Marco</div>
+    <div class="adj-row" onclick="openModal('Padel (2 clubs)','$791','marco','🎾 Deporte')"><div style="flex:1"><div class="adj-desc">Padel (2 clubs)</div><div class="adj-meta"><span class="badge bm">Marco</span> · 🎾 Deporte</div></div><div class="adj-amt">$791</div><div class="chev">›</div></div>
+    <div class="adj-row" onclick="openModal('Jams Barber Shop x2','$480','marco','✂️ Cuidado personal')"><div style="flex:1"><div class="adj-desc">Jams Barber Shop (x2)</div><div class="adj-meta"><span class="badge bm">Marco</span> · ✂️ Cuidado personal</div></div><div class="adj-amt">$480</div><div class="chev">›</div></div>
+    <div class="adj-row" onclick="openModal('Tenso + Samurai Japan','$2,740','marco','🌐 Importación')"><div style="flex:1"><div class="adj-desc">Tenso + Samurai Japan</div><div class="adj-meta"><span class="badge bm">Marco</span> · 🌐 Importación</div></div><div class="adj-amt">$2,740</div><div class="chev">›</div></div>
+    <div class="lhd">Banamex · Split 65/35</div>
+    <div class="adj-row" onclick="openModal('PayPal *Walmart MX x3','$5,338','split','🛒 Super')"><div style="flex:1"><div class="adj-desc">PayPal *Walmart MX (x3)</div><div class="adj-meta"><span class="badge bs">Split</span> · 🛒 Super</div></div><div class="adj-amt">$5,338</div><div class="chev">›</div></div>
+    <div class="adj-row" onclick="openModal('TDA Servicio La Corone x3','$5,952','marco','⛽ Gasolina')"><div style="flex:1"><div class="adj-desc">TDA Servicio La Corone (x3)</div><div class="adj-meta"><span class="badge bm">Marco</span> · ⛽ Gasolina</div></div><div class="adj-amt">$5,952</div><div class="chev">›</div></div>
+    <div class="lhd">Banamex · Fabiola</div>
+    <div class="adj-row" onclick="openModal('Super Carnic Martínez x2','$1,376','fabiola','🐾 Mascotas')"><div style="flex:1"><div class="adj-desc">Super Carnic Martínez (x2)</div><div class="adj-meta"><span class="badge bf">Fabiola</span> · 🐾 Comida perros</div></div><div class="adj-amt">$1,376</div><div class="chev">›</div></div>
+    <div class="adj-row" onclick="openModal('Telcel recargas x6','$565','fabiola','📱 Telefonía')"><div style="flex:1"><div class="adj-desc">Telcel Recargas (x6)</div><div class="adj-meta"><span class="badge bf">Fabiola</span> · 📱 Telefonía</div></div><div class="adj-amt">$565</div><div class="chev">›</div></div>
+    <div class="adj-row" onclick="openModal('SIAPA + Spotify + IZZI','$1,156','fabiola','🏠 Servicios')"><div style="flex:1"><div class="adj-desc">SIAPA + Spotify + IZZI</div><div class="adj-meta"><span class="badge bf">Fabiola</span> · 🏠 Servicios casa</div></div><div class="adj-amt">$1,156</div><div class="chev">›</div></div>
+    <div class="lhd">Invex · Vuelos</div>
+    <div class="adj-row" onclick="openModal('Volaris Moto Deb 2','$5,256','ext','✈️ Vuelo')"><div style="flex:1"><div class="adj-desc">Volaris Moto Deb 2</div><div class="adj-meta"><span class="badge be">Externo</span> · ✈️ Tercero</div></div><div class="adj-amt">$5,256</div><div class="chev">›</div></div>
+    <div class="adj-row" onclick="openModal('Tras MSI Volaris 3/3','$1,626','split','✈️ Vuelo')"><div style="flex:1"><div class="adj-desc">Tras MSI Volaris (3/3)</div><div class="adj-meta"><span class="badge bs">Split</span> · ✈️ Vuelo nacional</div></div><div class="adj-amt">$1,626</div><div class="chev">›</div></div>
+  </div>
+  <div class="sec-hd"><div class="sec-title">Reglas automáticas</div></div>
+  <div class="card">
+    <div class="tog-row"><span class="tog-lbl">Banamex → Split 65/35</span><button class="tog on" onclick="this.classList.toggle('on')"><div class="tog-thumb"></div></button></div>
+    <div class="tog-row"><span class="tog-lbl">Amex MX → Personal Marco</span><button class="tog on" onclick="this.classList.toggle('on')"><div class="tog-thumb"></div></button></div>
+    <div class="tog-row"><span class="tog-lbl">Amex extranjero → Vacaciones Split</span><button class="tog on" onclick="this.classList.toggle('on')"><div class="tog-thumb"></div></button></div>
+    <div class="tog-row"><span class="tog-lbl">Gasolina/Servicio/Gas → Marco</span><button class="tog on" onclick="this.classList.toggle('on')"><div class="tog-thumb"></div></button></div>
+    <div class="tog-row"><span class="tog-lbl">Restaurantes/OXXO → Split siempre</span><button class="tog on" onclick="this.classList.toggle('on')"><div class="tog-thumb"></div></button></div>
+    <div class="tog-row"><span class="tog-lbl">Telefonía/Servicios → Fabiola</span><button class="tog on" onclick="this.classList.toggle('on')"><div class="tog-thumb"></div></button></div>
+    <div class="tog-row"><span class="tog-lbl">Super Carnic → Mascotas Fabiola</span><button class="tog on" onclick="this.classList.toggle('on')"><div class="tog-thumb"></div></button></div>
+    <div class="tog-row"><span class="tog-lbl">Invex terceros → Excluir</span><button class="tog on" onclick="this.classList.toggle('on')"><div class="tog-thumb"></div></button></div>
+    <div class="tog-row" style="border:none"><span class="tog-lbl">CFE bimestral → Fabiola</span><button class="tog on" onclick="this.classList.toggle('on')"><div class="tog-thumb"></div></button></div>
   </div>
 </div>
 
-<!-- ═══ IA ═══ -->
+<!-- IA -->
 <div class="screen" id="s-ia">
-  <div class="section-header">
-    <div class="section-title">IA</div>
-    <div class="section-sub">Aprende de tus patrones</div>
-  </div>
-
-  <div style="padding:0 16px 12px">
-    <div style="background:linear-gradient(135deg,rgba(10,132,255,.15),rgba(191,90,242,.15));border:1px solid rgba(10,132,255,.2);border-radius:var(--r);padding:16px">
-      <div style="font-size:11px;color:#0a84ff;font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">🤖 Claude AI · Período actual</div>
-      <div style="font-size:14px;color:var(--text2);line-height:1.6">Analizando <strong style="color:var(--text)">1 período</strong> · 70+ transacciones · 3 tarjetas. El análisis mejora con cada mes que agregues.</div>
+  <div class="page-header"><div class="page-title">IA</div><div class="page-sub">Aprende · Analiza · Sugiere</div></div>
+  <div style="padding:12px 16px 8px">
+    <div style="background:linear-gradient(135deg,rgba(10,132,255,.12),rgba(191,90,242,.1));border:1px solid rgba(10,132,255,.2);border-radius:var(--r);padding:16px">
+      <div style="font-size:10px;color:var(--blue);font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px">🤖 Claude AI · 1 período analizado</div>
+      <div style="font-size:14px;color:var(--text2);line-height:1.6">El análisis mejora cada mes que agregues. Con 3+ meses: tendencias, comparativos y proyecciones automáticas.</div>
     </div>
   </div>
-
-  <div class="insight" style="background:rgba(255,69,58,.08);border:1px solid rgba(255,69,58,.15)">
-    <div class="insight-icon">🔴</div>
-    <div class="insight-body">
-      <h4>Ingreso comprometido al 87%</h4>
-      <p>Este mes comprometiste $75,141 de $86,490. El viaje a Bahía Banderas fue el driver principal (25% del gasto total).</p>
-      <div class="insight-tag" style="color:#ff453a">Sin el viaje → 71% comprometido ✓</div>
-    </div>
+  <div class="insight" style="background:rgba(255,69,58,.07);border:1px solid rgba(255,69,58,.15)">
+    <div class="ins-icon">🔴</div>
+    <div class="ins-body"><h4>87% del ingreso comprometido</h4><p>Comprometiste $75,141 de $86,490. El viaje a Bahía (25% del gasto) fue el driver principal.</p><div class="ins-tag" style="color:var(--red)">Sin el viaje → 71% comprometido ✓</div></div>
   </div>
-
-  <div class="insight" style="background:rgba(255,159,10,.08);border:1px solid rgba(255,159,10,.15)">
-    <div class="insight-icon">🟡</div>
-    <div class="insight-body">
-      <h4>Asimetría Marco–Fabiola</h4>
-      <p>Marco absorbe renta + INFONAVIT + gasolina + mayor split, quedando en negativo. Fabiola tiene $7,740 libres.</p>
-      <div class="insight-tag" style="color:#ff9f0a">Estrategia: Fabiola aporta $3k/mes a ahorro</div>
-    </div>
+  <div class="insight" style="background:rgba(255,159,10,.07);border:1px solid rgba(255,159,10,.15)">
+    <div class="ins-icon">🟡</div>
+    <div class="ins-body"><h4>Marco absorbe carga desproporcionada</h4><p>Renta + INFONAVIT + gasolina + 65% split lo dejan negativo en meses con viajes.</p><div class="ins-tag" style="color:var(--orange)">Fabiola aporta $3k/mes a ahorro conjunto</div></div>
   </div>
-
-  <div class="insight" style="background:rgba(255,159,10,.08);border:1px solid rgba(255,159,10,.15)">
-    <div class="insight-icon">🟡</div>
-    <div class="insight-body">
-      <h4>$114k en MSI Banamex</h4>
-      <p>Macstore representa ~$87k a 24 meses. Pagos fijos que reducen el flujo por 20+ meses más.</p>
-      <div class="insight-tag" style="color:#ff9f0a">Evitar nuevas compras a meses por ahora</div>
-    </div>
+  <div class="insight" style="background:rgba(255,159,10,.07);border:1px solid rgba(255,159,10,.15)">
+    <div class="ins-icon">🟡</div>
+    <div class="ins-body"><h4>$114k MSI Banamex · 20+ meses</h4><p>Macstore ~$87k. Hay ~$3,300/mes en cuotas fijas que reducen el flujo disponible.</p><div class="ins-tag" style="color:var(--orange)">Evitar nuevas compras a meses por ahora</div></div>
   </div>
-
-  <div class="insight" style="background:rgba(48,209,88,.08);border:1px solid rgba(48,209,88,.15)">
-    <div class="insight-icon">🟢</div>
-    <div class="insight-body">
-      <h4>Cero intereses generados</h4>
-      <p>Las 3 tarjetas pagaron a tiempo y sin generar intereses. Excelente disciplina financiera.</p>
-      <div class="insight-tag" style="color:#30d158">Mantener pago total en Amex e Invex ✓</div>
-    </div>
+  <div class="insight" style="background:rgba(48,209,88,.07);border:1px solid rgba(48,209,88,.15)">
+    <div class="ins-icon">🟢</div>
+    <div class="ins-body"><h4>Cero intereses · excelente disciplina</h4><p>Las 3 tarjetas pagaron sin generar intereses. Mantener pago total en Amex e Invex siempre.</p><div class="ins-tag" style="color:var(--green)">Ahorro vs pago mínimo: ~$800/mes</div></div>
   </div>
-
-  <div class="insight" style="background:rgba(48,209,88,.08);border:1px solid rgba(48,209,88,.15)">
-    <div class="insight-icon">🟢</div>
-    <div class="insight-body">
-      <h4>Vales de despensa optimizados</h4>
-      <p>$9,496 en vales cubren el super completo ($9,660). Ahorro real de efectivo que pocas familias contabilizan.</p>
-      <div class="insight-tag" style="color:#30d158">Equivale a $114k anuales en poder de compra</div>
-    </div>
+  <div class="insight" style="background:rgba(48,209,88,.07);border:1px solid rgba(48,209,88,.15)">
+    <div class="ins-icon">🟢</div>
+    <div class="ins-body"><h4>Vales = $113,952/año en poder de compra</h4><p>$9,496/mes en vales cubren el super completo. Beneficio real que pocas familias contabilizan.</p><div class="ins-tag" style="color:var(--green)">Maximiza uso de vales en super</div></div>
   </div>
-
-  <div class="section-header">
-    <div class="section-title">Meta $15,000</div>
+  <div class="insight" style="background:rgba(10,132,255,.07);border:1px solid rgba(10,132,255,.15)">
+    <div class="ins-icon">💡</div>
+    <div class="ins-body"><h4>Micro-gastos conveniencias: $1,220</h4><p>OXXO + 7-Eleven + tiendita = 5+ visitas. Este patrón crece mes a mes sin notarse.</p><div class="ins-tag" style="color:var(--blue)">Potencial ahorro: $800–1,000/mes</div></div>
   </div>
-
+  <div class="sec-hd"><div class="sec-title">Meta $15,000</div></div>
   <div class="card">
-    <div class="meta-row">
-      <div class="meta-circle">A</div>
-      <div class="meta-text">Solo delivery + OXXO → <strong>$1,500/mes</strong> → <strong>10 meses</strong></div>
-    </div>
-    <div class="meta-row">
-      <div class="meta-circle">B</div>
-      <div class="meta-text">Fabiola aporta flujo libre → <strong>$4,000/mes</strong> → <strong>4 meses</strong></div>
-    </div>
-    <div class="meta-row">
-      <div class="meta-circle">C</div>
-      <div class="meta-text">Reducir viajes → <strong>$7,000/mes</strong> → <strong>2 meses</strong></div>
-    </div>
-    <div class="meta-row">
-      <div class="meta-circle" style="background:rgba(255,214,10,.15);color:#ffd60a">★</div>
-      <div class="meta-text">Fabiola $3,000/mes ahorro → <strong>meta en 5 meses</strong> sin cambios drásticos para Marco</div>
-    </div>
+    <div class="meta-row"><div class="meta-n" style="background:rgba(255,255,255,.08);color:var(--text2)">A</div><div class="meta-text">Solo delivery + OXXO → <strong>$1,500/mes</strong> → <strong>10 meses</strong></div></div>
+    <div class="meta-row"><div class="meta-n" style="background:rgba(255,159,10,.15);color:var(--orange)">B</div><div class="meta-text">Fabiola aporta flujo libre → <strong>$4,000/mes</strong> → <strong>4 meses</strong></div></div>
+    <div class="meta-row"><div class="meta-n" style="background:rgba(48,209,88,.15);color:var(--green)">★</div><div class="meta-text">Fabiola ahorra <strong>$3,000/mes</strong> → <strong>meta en 5 meses</strong> sin cambios drásticos para Marco</div></div>
+    <div class="meta-row"><div class="meta-n" style="background:rgba(10,132,255,.15);color:var(--blue)">C</div><div class="meta-text">Viajes cada 2 meses → <strong>$7,000/mes</strong> → <strong>meta en 2 meses</strong></div></div>
   </div>
-
-  <div class="section-header">
-    <div class="section-title">Ahorros potenciales</div>
-  </div>
-
+  <div class="sec-hd"><div class="sec-title">Ahorro potencial</div></div>
   <div class="card">
-    <div class="card-row">
-      <div><div style="font-size:15px;font-weight:500">✈️ Reducir viajes</div><div style="font-size:12px;color:var(--text2)">Cada 2 meses en lugar de mensual</div></div>
-      <div style="color:#30d158;font-weight:600">$5–7k</div>
-    </div>
-    <div class="card-row">
-      <div><div style="font-size:15px;font-weight:500">🏪 OXXO y conveniencias</div><div style="font-size:12px;color:var(--text2)">Planear en super</div></div>
-      <div style="color:#30d158;font-weight:600">$800–1k</div>
-    </div>
-    <div class="card-row">
-      <div><div style="font-size:15px;font-weight:500">🛵 Delivery</div><div style="font-size:12px;color:var(--text2)">Reducir a 2x/semana</div></div>
-      <div style="color:#30d158;font-weight:600">$350–500</div>
-    </div>
-    <div class="card-row">
-      <div><div style="font-size:15px;font-weight:500">📱 Apple duplicado</div><div style="font-size:12px;color:var(--text2)">Consolidar en plan familia</div></div>
-      <div style="color:#30d158;font-weight:600">$150–300</div>
-    </div>
-    <div class="card-row" style="background:rgba(48,209,88,.05)">
-      <div style="font-size:15px;font-weight:700">Total potencial</div>
-      <div style="color:#30d158;font-weight:700;font-size:17px">$6.3–8.8k/mes</div>
-    </div>
+    <div class="crow"><span class="crow-label">✈️ Reducir viajes</span><span class="crow-val" style="color:var(--green)">$5–7k/mes</span></div>
+    <div class="crow"><span class="crow-label">🏪 OXXO y conveniencias</span><span class="crow-val" style="color:var(--green)">$800–1k/mes</span></div>
+    <div class="crow"><span class="crow-label">🛵 Delivery (2x/semana)</span><span class="crow-val" style="color:var(--green)">$350–500/mes</span></div>
+    <div class="crow"><span class="crow-label">📱 Apple duplicado</span><span class="crow-val" style="color:var(--green)">$150–300/mes</span></div>
+    <div class="crow" style="background:rgba(48,209,88,.04)"><span class="crow-label" style="font-weight:700">Total potencial</span><span class="crow-val" style="color:var(--green);font-size:17px">$6.3–8.8k/mes</span></div>
   </div>
 </div>
 ```
 
   </div><!-- /screens -->
 
-  <!-- TAB BAR -->
-
   <div class="tab-bar">
-    <button class="tab active" onclick="showTab('inicio',this)">
-      <span class="tab-icon">🏠</span>
-      <span class="tab-label">Inicio</span>
-    </button>
-    <button class="tab" onclick="showTab('tarjetas',this)">
-      <span class="tab-icon">💳</span>
-      <span class="tab-label">Tarjetas</span>
-    </button>
-    <button class="tab" onclick="showTab('split',this)">
-      <span class="tab-icon">⚖️</span>
-      <span class="tab-label">Split</span>
-    </button>
-    <button class="tab" onclick="showTab('gastos',this)">
-      <span class="tab-icon">📊</span>
-      <span class="tab-label">Gastos</span>
-    </button>
-    <button class="tab" onclick="showTab('ajustes',this)">
-      <span class="tab-icon">✏️</span>
-      <span class="tab-label">Ajustes</span>
-    </button>
-    <button class="tab" onclick="showTab('ia',this)">
-      <span class="tab-icon">🤖</span>
-      <span class="tab-label">IA</span>
-    </button>
+    <button class="tab active" onclick="showTab('inicio',this)"><div class="tab-icon">🏠</div><div class="tab-label">Inicio</div></button>
+    <button class="tab" onclick="showTab('tarjetas',this)"><div class="tab-icon">💳</div><div class="tab-label">Tarjetas</div><div class="tab-dot"></div></button>
+    <button class="tab" onclick="showTab('split',this)"><div class="tab-icon">⚖️</div><div class="tab-label">Split</div></button>
+    <button class="tab" onclick="showTab('gastos',this)"><div class="tab-icon">📊</div><div class="tab-label">Gastos</div></button>
+    <button class="tab" onclick="showTab('ajustes',this)"><div class="tab-icon">✏️</div><div class="tab-label">Ajustes</div></button>
+    <button class="tab" onclick="showTab('ia',this)"><div class="tab-icon">🤖</div><div class="tab-label">IA</div></button>
   </div>
+</div>
 
-</div><!-- /app -->
-
-<!-- MODAL RECLASIFICAR -->
+<!-- MODAL -->
 
 <div class="modal-overlay" id="modal" onclick="if(event.target===this)closeModal()">
   <div class="modal">
     <div class="modal-handle"></div>
-    <div class="modal-title" id="modal-title">Reclasificar</div>
-    <div style="font-size:14px;color:var(--text2);margin-bottom:16px" id="modal-desc"></div>
-
-```
-<div style="font-size:13px;color:var(--text2);margin-bottom:10px;font-weight:600">¿QUIÉN PAGA?</div>
-<button class="modal-option" onclick="setWho('marco')">
-  <span class="modal-option-icon">👨</span>
-  <span class="modal-option-label">Marco (personal)</span>
-  <span style="margin-left:auto;font-size:20px" id="check-marco"></span>
-</button>
-<button class="modal-option" onclick="setWho('fabiola')">
-  <span class="modal-option-icon">👩</span>
-  <span class="modal-option-label">Fabiola (personal)</span>
-  <span style="margin-left:auto;font-size:20px" id="check-fabiola"></span>
-</button>
-<button class="modal-option" onclick="setWho('split')">
-  <span class="modal-option-icon">⚖️</span>
-  <span class="modal-option-label">Split 65% / 35%</span>
-  <span style="margin-left:auto;font-size:20px" id="check-split"></span>
-</button>
-<button class="modal-option" onclick="setWho('ext')">
-  <span class="modal-option-icon">🚫</span>
-  <span class="modal-option-label">Externo (no aplica)</span>
-  <span style="margin-left:auto;font-size:20px" id="check-ext"></span>
-</button>
-
-<button class="modal-cancel" onclick="saveAndClose()">Guardar cambio</button>
-```
-
+    <div class="modal-title" id="m-title"></div>
+    <div class="modal-desc" id="m-desc"></div>
+    <div class="modal-sec">¿Quién paga?</div>
+    <button class="modal-opt" onclick="setWho('marco')"><span class="modal-opt-icon">👨</span><span class="modal-opt-label">Marco · Personal</span><span class="modal-check" id="ck-marco"></span></button>
+    <button class="modal-opt" onclick="setWho('fabiola')"><span class="modal-opt-icon">👩</span><span class="modal-opt-label">Fabiola · Personal / Responsabilidad</span><span class="modal-check" id="ck-fabiola"></span></button>
+    <button class="modal-opt" onclick="setWho('split')"><span class="modal-opt-icon">⚖️</span><span class="modal-opt-label">Split 65% Marco · 35% Fabiola</span><span class="modal-check" id="ck-split"></span></button>
+    <button class="modal-opt" onclick="setWho('ext')"><span class="modal-opt-icon">🚫</span><span class="modal-opt-label">Externo · No aplica</span><span class="modal-check" id="ck-ext"></span></button>
+    <div class="modal-sec">Categoría</div>
+    <div class="cat-grid">
+      <button class="cat-btn" onclick="setCat(this,'🏖️ Vacaciones')"><div class="cat-btn-icon">🏖️</div><div class="cat-btn-lbl">Vacaciones</div></button>
+      <button class="cat-btn" onclick="setCat(this,'⛽ Gasolina')"><div class="cat-btn-icon">⛽</div><div class="cat-btn-lbl">Gasolina</div></button>
+      <button class="cat-btn" onclick="setCat(this,'🛒 Super')"><div class="cat-btn-icon">🛒</div><div class="cat-btn-lbl">Super</div></button>
+      <button class="cat-btn" onclick="setCat(this,'🍽️ Restaurante')"><div class="cat-btn-icon">🍽️</div><div class="cat-btn-lbl">Restaurante</div></button>
+      <button class="cat-btn" onclick="setCat(this,'💊 Farmacia')"><div class="cat-btn-icon">💊</div><div class="cat-btn-lbl">Farmacia</div></button>
+      <button class="cat-btn" onclick="setCat(this,'💻 Tecnología')"><div class="cat-btn-icon">💻</div><div class="cat-btn-lbl">Tecnología</div></button>
+      <button class="cat-btn" onclick="setCat(this,'📱 Telefonía')"><div class="cat-btn-icon">📱</div><div class="cat-btn-lbl">Telefonía</div></button>
+      <button class="cat-btn" onclick="setCat(this,'🐾 Mascotas')"><div class="cat-btn-icon">🐾</div><div class="cat-btn-lbl">Mascotas</div></button>
+      <button class="cat-btn" onclick="setCat(this,'🛍️ Compras')"><div class="cat-btn-icon">🛍️</div><div class="cat-btn-lbl">Compras</div></button>
+      <button class="cat-btn" onclick="setCat(this,'✈️ Vuelo')"><div class="cat-btn-icon">✈️</div><div class="cat-btn-lbl">Vuelo</div></button>
+      <button class="cat-btn" onclick="setCat(this,'🏪 Conveniencia')"><div class="cat-btn-icon">🏪</div><div class="cat-btn-lbl">Conven.</div></button>
+      <button class="cat-btn" onclick="setCat(this,'🏠 Servicios')"><div class="cat-btn-icon">🏠</div><div class="cat-btn-lbl">Servicios</div></button>
+    </div>
+    <button class="modal-save" onclick="saveModal()">Guardar cambio</button>
+    <button class="modal-cancel" onclick="closeModal()">Cancelar</button>
   </div>
 </div>
 
 <script>
-// ── CONFIG ──────────────────────────────────────────────
-const SUPABASE_URL = 'https://aixswujsrycpsfmijwfa.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFpeHN3dWpzcnljcHNmbWlqd2ZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc2NDQ1MDQsImV4cCI6MjA5MzIyMDUwNH0.qxLAmrNgGSCZtYGl8KNJsw4KIHyI8isCYJDe3zlYEG8';
+const SB='https://aixswujsrycpsfmijwfa.supabase.co';
+const SK='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFpeHN3dWpzcnljcHNmbWlqd2ZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc2NDQ1MDQsImV4cCI6MjA5MzIyMDUwNH0.qxLAmrNgGSCZtYGl8KNJsw4KIHyI8isCYJDe3zlYEG8';
+let M={desc:'',amount:'',who:'',cat:''};
 
-let currentModal = { desc:'', amount:'', who:'' };
+function tick(){const d=new Date();document.getElementById('clock').textContent=d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0');}
+tick();setInterval(tick,30000);
 
-// ── TIME ─────────────────────────────────────────────────
-function updateTime() {
-  const d = new Date();
-  document.getElementById('time-display').textContent =
-    d.getHours().toString().padStart(2,'0') + ':' + d.getMinutes().toString().padStart(2,'0');
-}
-updateTime();
-setInterval(updateTime, 60000);
-
-// ── NAVIGATION ────────────────────────────────────────────
-function showTab(id, el) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.getElementById('s-' + id).classList.add('active');
-  if(el) el.classList.add('active');
+function showTab(id,el){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('s-'+id).classList.add('active');
+  if(el)el.classList.add('active');
+  if(id==='gastos'&&!window._ci){initChart();window._ci=true;}
 }
 
-// ── MODAL ────────────────────────────────────────────────
-function showModal(desc, amount, who) {
-  currentModal = { desc, amount, who };
-  document.getElementById('modal-title').textContent = desc;
-  document.getElementById('modal-desc').textContent = amount;
-  ['marco','fabiola','split','ext'].forEach(w => {
-    document.getElementById('check-' + w).textContent = w === who ? '✓' : '';
-  });
+function openModal(desc,amount,who,cat){
+  M={desc,amount,who,cat};
+  document.getElementById('m-title').textContent=desc;
+  document.getElementById('m-desc').textContent=amount+' · '+cat;
+  ['marco','fabiola','split','ext'].forEach(w=>document.getElementById('ck-'+w).textContent=w===who?'✓':'');
+  document.querySelectorAll('.cat-btn').forEach(b=>b.classList.toggle('sel',b.querySelector('.cat-btn-icon').textContent===cat.split(' ')[0]));
   document.getElementById('modal').classList.add('open');
 }
-function closeModal() { document.getElementById('modal').classList.remove('open'); }
-function setWho(who) {
-  currentModal.who = who;
-  ['marco','fabiola','split','ext'].forEach(w => {
-    document.getElementById('check-' + w).textContent = w === who ? '✓' : '';
-  });
-}
-async function saveAndClose() {
-  await supabasePost('transacciones', {
-    descripcion: currentModal.desc,
-    monto: parseFloat(currentModal.amount.replace('$','').replace(',','')),
-    quien_paga: currentModal.who,
-    periodo_id: 'ABR2026'
-  });
+function closeModal(){document.getElementById('modal').classList.remove('open');}
+function setWho(who){M.who=who;['marco','fabiola','split','ext'].forEach(w=>document.getElementById('ck-'+w).textContent=w===who?'✓':'');}
+function setCat(el,cat){M.cat=cat;document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('sel'));el.classList.add('sel');}
+async function saveModal(){
+  await sbPost('transacciones',{descripcion:M.desc,quien_paga:M.who,categoria:M.cat,periodo_id:'ABR2026',tarjeta:'manual'});
   closeModal();
 }
-
-// ── SUPABASE ──────────────────────────────────────────────
-async function supabasePost(table, data) {
-  try {
-    await fetch(`${SUPABASE_URL}/rest/v1/${table}`, {
-      method:'POST',
-      headers:{
-        'apikey': SUPABASE_KEY,
-        'Authorization': 'Bearer ' + SUPABASE_KEY,
-        'Content-Type': 'application/json',
-        'Prefer': 'return=minimal'
-      },
-      body: JSON.stringify(data)
-    });
-  } catch(e) { console.log('Supabase:', e); }
+async function sbPost(t,d){
+  try{await fetch(`${SB}/rest/v1/${t}`,{method:'POST',headers:{'apikey':SK,'Authorization':'Bearer '+SK,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify(d)});}catch(e){}
 }
-
-// ── IMPORT JSON ───────────────────────────────────────────
-function importJSON(event) {
-  const file = event.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = async (e) => {
-    try {
-      const data = JSON.parse(e.target.result);
-      await supabasePost('periodos', {
-        id: data.id || 'IMPORT_' + Date.now(),
-        label: data.label || 'Período importado',
-        datos: data
-      });
-      alert('✅ Período importado correctamente');
-    } catch(err) {
-      alert('❌ Error al importar. Verifica el archivo JSON.');
-    }
-  };
-  reader.readAsText(file);
+function importJSON(e){
+  const f=e.target.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=async ev=>{
+    try{const d=JSON.parse(ev.target.result);await sbPost('periodos',{id:d.id||'IMP_'+Date.now(),label:d.label||'Período',datos:d});alert('✅ Período importado. Recarga para ver.');}
+    catch{alert('❌ JSON inválido.');}
+  };r.readAsText(f);
 }
-
-// ── CHART ─────────────────────────────────────────────────
-function initChart() {
-  const ctx = document.getElementById('chartGastos');
-  if (!ctx) return;
-  new Chart(ctx, {
-    type: 'doughnut',
-    data: {
-      labels: ['Vacaciones','Renta','Super','Gasolina','Tecnología','Farmacia','Restaurantes','Compras','Otros'],
-      datasets: [{
-        data: [14409,18000,9660,5952,3700,3138,3207,5089,4879],
-        backgroundColor: ['#ff9f0a','#0a84ff','#30d158','#ff453a','#bf5af2','#ff375f','#5ac8fa','#ffd60a','#636366'],
-        borderWidth: 0, hoverOffset: 8
-      }]
-    },
-    options: {
-      responsive:true, maintainAspectRatio:true,
-      plugins: {
-        legend: { position:'bottom', labels:{ color:'rgba(255,255,255,0.6)', font:{size:10,family:'-apple-system'}, padding:8, boxWidth:8 } },
-        tooltip: { callbacks:{ label: ctx => ` $${ctx.parsed.toLocaleString('es-MX')}` } }
-      },
-      cutout: '65%'
-    }
-  });
+function initChart(){
+  const ctx=document.getElementById('chartG');if(!ctx)return;
+  new Chart(ctx,{type:'doughnut',data:{labels:['Vacaciones','Renta','Super','Gasolina','Tecnología','Farmacia','Restaurantes','Compras','Otros'],datasets:[{data:[14409,18000,9660,5952,3700,3138,3207,5089,3879],backgroundColor:['#ff9f0a','#0a84ff','#30d158','#ff453a','#bf5af2','#ff375f','#5ac8fa','#ffd60a','#48484a'],borderWidth:0,hoverOffset:6}]},options:{responsive:true,maintainAspectRatio:true,cutout:'60%',plugins:{legend:{position:'bottom',labels:{color:'rgba(255,255,255,.55)',font:{size:10},padding:8,boxWidth:8}},tooltip:{callbacks:{label:c=>` $${c.parsed.toLocaleString('es-MX')}` }}}}});
 }
-
-// ── INIT ──────────────────────────────────────────────────
-window.addEventListener('DOMContentLoaded', () => {
-  initChart();
-});
+window.addEventListener('DOMContentLoaded',()=>{sbPost('configuracion',{clave:'last_access',valor:new Date().toISOString()}).catch(()=>{});});
 </script>
 
 </body>
