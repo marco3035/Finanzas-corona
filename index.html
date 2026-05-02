@@ -26,7 +26,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 .app{height:100vh;display:flex;flex-direction:column;overflow:hidden;}
 .status-bar{height:50px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;font-size:13px;font-weight:600;flex-shrink:0;}
 .screens{flex:1;overflow:hidden;position:relative;}
-.screen{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;display:none;padding-bottom:90px;}
+.screen{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;display:none;padding-bottom:calc(90px + env(safe-area-inset-bottom));}
 .screen.active{display:block;animation:fadeUp .25s ease;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 .tab-bar{position:fixed;bottom:0;left:0;right:0;z-index:100;background:rgba(18,18,18,.95);backdrop-filter:blur(30px);border-top:1px solid var(--sep);display:flex;padding:10px 0 calc(10px + env(safe-area-inset-bottom));flex-shrink:0;}
