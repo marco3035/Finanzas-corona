@@ -277,7 +277,7 @@ a,button,[onclick],[data-tab]{touch-action:manipulation;}
   <div class="ph"><div class="ph-title">Inicio</div><div class="ph-sub">Abr 2026 · 3 tarjetas</div></div>
 
   <!-- PENDING BANNER -->
-  <div class="pend-banner" onclick="showTab('clasificar')" id="pend-banner" style="display:none">
+  <div class="pend-banner" data-action="showTab('clasificar')" id="pend-banner" style="display:none">
     <div class="pend-count" id="pend-count">0</div>
     <div class="pend-txt"><h4>Cargos por clasificar</h4><p>Toca para clasificarlos rápido</p></div>
     <div class="pend-arr">›</div>
@@ -300,15 +300,15 @@ a,button,[onclick],[data-tab]{touch-action:manipulation;}
 
   <div class="sec-hd"><div class="sec-t">Pagos este mes</div></div>
   <div class="card">
-    <div class="cr tap" onclick="openPayModal('amex')">
+    <div class="cr tap" data-action="openPayModal('amex')">
       <div class="cr-l"><div class="cr-lb" style="color:var(--amex)">Amex Platinum ····71000</div><div class="cr-s" id="amex-status-txt">Vence 18 Mayo · Pagado ✅ el 16 Abr</div></div>
       <div style="text-align:right"><div class="cr-v" style="color:var(--amex)">$35,530</div><div class="cr-hint" id="amex-hint" style="color:var(--green)">✓ Sin intereses</div></div>
     </div>
-    <div class="cr tap" onclick="openPayModal('banamex')">
+    <div class="cr tap" data-action="openPayModal('banamex')">
       <div class="cr-l"><div class="cr-lb" style="color:var(--bana)">Banamex Oro ····3887</div><div class="cr-s" id="bana-status-txt" style="color:var(--red)">Venció 27 Abr ⚠ Sin pago registrado</div></div>
       <div style="text-align:right"><div class="cr-v" style="color:var(--bana)">$35,129</div><div class="cr-hint">Mín $5,770</div></div>
     </div>
-    <div class="cr tap" onclick="openPayModal('invex')">
+    <div class="cr tap" data-action="openPayModal('invex')">
       <div class="cr-l"><div class="cr-lb" style="color:var(--invex)">Invex Volaris ····3870</div><div class="cr-s" id="invex-status-txt" style="color:var(--red)">Venció 27 Abr ⚠ Sin pago registrado</div></div>
       <div style="text-align:right"><div class="cr-v" style="color:var(--invex)">$6,882</div><div class="cr-hint">Mín $1,730</div></div>
     </div>
@@ -472,18 +472,18 @@ a,button,[onclick],[data-tab]{touch-action:manipulation;}
     <div style="padding:12px 16px 8px"><canvas id="chartG"></canvas></div>
     <div class="card">
       <div class="lhd">Toca para ver detalle</div>
-      <div class="cat-r" onclick="openCat('vacaciones')"><div class="cat-ic" style="background:rgba(255,159,10,.15)">🏖️</div><div style="flex:1"><div class="cat-nm">Vacaciones</div><div class="cat-wh"><span class="badge bs">Split</span> · Amex 3MSI</div></div><div><div class="cat-amt">$14,409</div><div class="cat-pct">25.3%</div></div><div class="chev">›</div></div>
-      <div class="cat-r" onclick="openCat('renta')"><div class="cat-ic" style="background:rgba(10,132,255,.15)">🏠</div><div style="flex:1"><div class="cat-nm">Renta</div><div class="cat-wh"><span class="badge bm">Marco</span></div></div><div><div class="cat-amt">$18,000</div><div class="cat-pct">31.6%</div></div><div class="chev">›</div></div>
-      <div class="cat-r" onclick="openCat('super')"><div class="cat-ic" style="background:rgba(48,209,88,.15)">🛒</div><div style="flex:1"><div class="cat-nm">Supermercado</div><div class="cat-wh"><span class="badge bs">Split</span> · cubierto por vales</div></div><div><div class="cat-amt">$9,660</div><div class="cat-pct">16.9%</div></div><div class="chev">›</div></div>
-      <div class="cat-r" onclick="openCat('gasolina')"><div class="cat-ic" style="background:rgba(255,69,58,.15)">⛽</div><div style="flex:1"><div class="cat-nm">Gasolina</div><div class="cat-wh"><span class="badge bm">Marco</span></div></div><div><div class="cat-amt">$5,952</div><div class="cat-pct">10.4%</div></div><div class="chev">›</div></div>
-      <div class="cat-r" onclick="openCat('tecnologia')"><div class="cat-ic" style="background:rgba(191,90,242,.15)">💻</div><div style="flex:1"><div class="cat-nm">Tecnología</div><div class="cat-wh"><span class="badge bs">Split</span> · MSI Banamex</div></div><div><div class="cat-amt">$3,700</div><div class="cat-pct">6.5%</div></div><div class="chev">›</div></div>
-      <div class="cat-r" onclick="openCat('farmacia')"><div class="cat-ic" style="background:rgba(255,55,95,.15)">💊</div><div style="flex:1"><div class="cat-nm">Farmacia</div><div class="cat-wh"><span class="badge bs">Split</span></div></div><div><div class="cat-amt">$3,138</div><div class="cat-pct">5.5%</div></div><div class="chev">›</div></div>
-      <div class="cat-r" onclick="openCat('restaurantes')"><div class="cat-ic" style="background:rgba(90,200,250,.15)">🍽️</div><div style="flex:1"><div class="cat-nm">Restaurantes / OXXO</div><div class="cat-wh"><span class="badge bs">Split siempre</span></div></div><div><div class="cat-amt">$3,207</div><div class="cat-pct">5.6%</div></div><div class="chev">›</div></div>
-      <div class="cat-r" onclick="openCat('compras')"><div class="cat-ic" style="background:rgba(255,214,10,.15)">🛍️</div><div style="flex:1"><div class="cat-nm">Compras online</div><div class="cat-wh"><span class="badge bm">Marco</span></div></div><div><div class="cat-amt">$5,089</div><div class="cat-pct">8.9%</div></div><div class="chev">›</div></div>
-      <div class="cat-r" onclick="openCat('telefonia')"><div class="cat-ic" style="background:rgba(255,55,95,.15)">📱</div><div style="flex:1"><div class="cat-nm">Telefonía + Servicios</div><div class="cat-wh"><span class="badge bf">Fabiola</span></div></div><div><div class="cat-amt">$1,639</div><div class="cat-pct">2.9%</div></div><div class="chev">›</div></div>
-      <div class="cat-r" onclick="openCat('mascotas')"><div class="cat-ic" style="background:rgba(48,209,88,.15)">🐾</div><div style="flex:1"><div class="cat-nm">Mascotas</div><div class="cat-wh"><span class="badge bf">Fabiola</span></div></div><div><div class="cat-amt">$1,816</div><div class="cat-pct">3.2%</div></div><div class="chev">›</div></div>
-      <div class="cat-r" onclick="openCat('adicionales')"><div class="cat-ic" style="background:rgba(255,159,10,.15)">👨‍👩‍👧‍👦</div><div style="flex:1"><div class="cat-nm">Tarjetas adicionales</div><div class="cat-wh">Olympia · Maybeth · Fabiola</div></div><div><div class="cat-amt">$2,704</div><div class="cat-pct">4.7%</div></div><div class="chev">›</div></div>
-      <div class="cat-r" onclick="openCat('otros')"><div class="cat-ic" style="background:rgba(255,255,255,.06)">📦</div><div style="flex:1"><div class="cat-nm">Otros</div><div class="cat-wh">Varios</div></div><div><div class="cat-amt">$3,879</div><div class="cat-pct">6.8%</div></div><div class="chev">›</div></div>
+      <div class="cat-r" data-action="openCat('vacaciones')"><div class="cat-ic" style="background:rgba(255,159,10,.15)">🏖️</div><div style="flex:1"><div class="cat-nm">Vacaciones</div><div class="cat-wh"><span class="badge bs">Split</span> · Amex 3MSI</div></div><div><div class="cat-amt">$14,409</div><div class="cat-pct">25.3%</div></div><div class="chev">›</div></div>
+      <div class="cat-r" data-action="openCat('renta')"><div class="cat-ic" style="background:rgba(10,132,255,.15)">🏠</div><div style="flex:1"><div class="cat-nm">Renta</div><div class="cat-wh"><span class="badge bm">Marco</span></div></div><div><div class="cat-amt">$18,000</div><div class="cat-pct">31.6%</div></div><div class="chev">›</div></div>
+      <div class="cat-r" data-action="openCat('super')"><div class="cat-ic" style="background:rgba(48,209,88,.15)">🛒</div><div style="flex:1"><div class="cat-nm">Supermercado</div><div class="cat-wh"><span class="badge bs">Split</span> · cubierto por vales</div></div><div><div class="cat-amt">$9,660</div><div class="cat-pct">16.9%</div></div><div class="chev">›</div></div>
+      <div class="cat-r" data-action="openCat('gasolina')"><div class="cat-ic" style="background:rgba(255,69,58,.15)">⛽</div><div style="flex:1"><div class="cat-nm">Gasolina</div><div class="cat-wh"><span class="badge bm">Marco</span></div></div><div><div class="cat-amt">$5,952</div><div class="cat-pct">10.4%</div></div><div class="chev">›</div></div>
+      <div class="cat-r" data-action="openCat('tecnologia')"><div class="cat-ic" style="background:rgba(191,90,242,.15)">💻</div><div style="flex:1"><div class="cat-nm">Tecnología</div><div class="cat-wh"><span class="badge bs">Split</span> · MSI Banamex</div></div><div><div class="cat-amt">$3,700</div><div class="cat-pct">6.5%</div></div><div class="chev">›</div></div>
+      <div class="cat-r" data-action="openCat('farmacia')"><div class="cat-ic" style="background:rgba(255,55,95,.15)">💊</div><div style="flex:1"><div class="cat-nm">Farmacia</div><div class="cat-wh"><span class="badge bs">Split</span></div></div><div><div class="cat-amt">$3,138</div><div class="cat-pct">5.5%</div></div><div class="chev">›</div></div>
+      <div class="cat-r" data-action="openCat('restaurantes')"><div class="cat-ic" style="background:rgba(90,200,250,.15)">🍽️</div><div style="flex:1"><div class="cat-nm">Restaurantes / OXXO</div><div class="cat-wh"><span class="badge bs">Split siempre</span></div></div><div><div class="cat-amt">$3,207</div><div class="cat-pct">5.6%</div></div><div class="chev">›</div></div>
+      <div class="cat-r" data-action="openCat('compras')"><div class="cat-ic" style="background:rgba(255,214,10,.15)">🛍️</div><div style="flex:1"><div class="cat-nm">Compras online</div><div class="cat-wh"><span class="badge bm">Marco</span></div></div><div><div class="cat-amt">$5,089</div><div class="cat-pct">8.9%</div></div><div class="chev">›</div></div>
+      <div class="cat-r" data-action="openCat('telefonia')"><div class="cat-ic" style="background:rgba(255,55,95,.15)">📱</div><div style="flex:1"><div class="cat-nm">Telefonía + Servicios</div><div class="cat-wh"><span class="badge bf">Fabiola</span></div></div><div><div class="cat-amt">$1,639</div><div class="cat-pct">2.9%</div></div><div class="chev">›</div></div>
+      <div class="cat-r" data-action="openCat('mascotas')"><div class="cat-ic" style="background:rgba(48,209,88,.15)">🐾</div><div style="flex:1"><div class="cat-nm">Mascotas</div><div class="cat-wh"><span class="badge bf">Fabiola</span></div></div><div><div class="cat-amt">$1,816</div><div class="cat-pct">3.2%</div></div><div class="chev">›</div></div>
+      <div class="cat-r" data-action="openCat('adicionales')"><div class="cat-ic" style="background:rgba(255,159,10,.15)">👨‍👩‍👧‍👦</div><div style="flex:1"><div class="cat-nm">Tarjetas adicionales</div><div class="cat-wh">Olympia · Maybeth · Fabiola</div></div><div><div class="cat-amt">$2,704</div><div class="cat-pct">4.7%</div></div><div class="chev">›</div></div>
+      <div class="cat-r" data-action="openCat('otros')"><div class="cat-ic" style="background:rgba(255,255,255,.06)">📦</div><div style="flex:1"><div class="cat-nm">Otros</div><div class="cat-wh">Varios</div></div><div><div class="cat-amt">$3,879</div><div class="cat-pct">6.8%</div></div><div class="chev">›</div></div>
     </div>
   </div>
 
@@ -515,10 +515,10 @@ a,button,[onclick],[data-tab]{touch-action:manipulation;}
     </div>
     <div class="sec-hd"><div class="sec-t">¿Quién paga?</div></div>
     <div class="card">
-      <div class="cr tap" onclick="setL3Who('marco')"><div style="display:flex;align-items:center;gap:12px"><span style="font-size:18px">👨</span><span class="cr-lb">Marco · Personal</span></div><span id="ck-m" style="color:var(--blue);font-size:20px"></span></div>
-      <div class="cr tap" onclick="setL3Who('fabiola')"><div style="display:flex;align-items:center;gap:12px"><span style="font-size:18px">👩</span><span class="cr-lb">Fabiola · Personal</span></div><span id="ck-f" style="color:var(--blue);font-size:20px"></span></div>
-      <div class="cr tap" onclick="setL3Who('split')"><div style="display:flex;align-items:center;gap:12px"><span style="font-size:18px">⚖️</span><span class="cr-lb">Split 65% / 35%</span></div><span id="ck-s" style="color:var(--blue);font-size:20px"></span></div>
-      <div class="cr tap" onclick="setL3Who('ext')" style="border:none"><div style="display:flex;align-items:center;gap:12px"><span style="font-size:18px">🚫</span><span class="cr-lb">Externo · No aplica</span></div><span id="ck-e" style="color:var(--blue);font-size:20px"></span></div>
+      <div class="cr tap" data-action="setL3Who('marco')"><div style="display:flex;align-items:center;gap:12px"><span style="font-size:18px">👨</span><span class="cr-lb">Marco · Personal</span></div><span id="ck-m" style="color:var(--blue);font-size:20px"></span></div>
+      <div class="cr tap" data-action="setL3Who('fabiola')"><div style="display:flex;align-items:center;gap:12px"><span style="font-size:18px">👩</span><span class="cr-lb">Fabiola · Personal</span></div><span id="ck-f" style="color:var(--blue);font-size:20px"></span></div>
+      <div class="cr tap" data-action="setL3Who('split')"><div style="display:flex;align-items:center;gap:12px"><span style="font-size:18px">⚖️</span><span class="cr-lb">Split 65% / 35%</span></div><span id="ck-s" style="color:var(--blue);font-size:20px"></span></div>
+      <div class="cr tap" data-action="setL3Who('ext')" style="border:none"><div style="display:flex;align-items:center;gap:12px"><span style="font-size:18px">🚫</span><span class="cr-lb">Externo · No aplica</span></div><span id="ck-e" style="color:var(--blue);font-size:20px"></span></div>
     </div>
     <div class="sec-hd"><div class="sec-t">Categoría</div></div>
     <div class="card" style="padding:12px">
@@ -660,15 +660,15 @@ a,button,[onclick],[data-tab]{touch-action:manipulation;}
   <div class="sec-hd"><div class="sec-t">Ingresos</div></div>
   <div class="card">
     <div class="lhd">Marco Antonio</div>
-    <div class="cr tap" onclick="editField('ingreso_marco','Ingreso neto Marco',56490)"><div class="cr-l"><div class="cr-lb">Ingreso neto mensual</div><div class="cr-s">Toca para editar</div></div><div style="display:flex;align-items:center;gap:6px"><span class="cr-v" style="color:var(--marco)" id="val-ingreso_marco">$56,490</span><span class="chev">›</span></div></div>
-    <div class="cr tap" onclick="editField('vales_marco','Vales de despensa Marco',8296)"><div class="cr-l"><div class="cr-lb">Vales de despensa</div></div><div style="display:flex;align-items:center;gap:6px"><span class="cr-v" style="color:var(--marco)" id="val-vales_marco">$8,296</span><span class="chev">›</span></div></div>
-    <div class="cr tap" onclick="editField('infonavit','INFONAVIT mensual',21903)"><div class="cr-l"><div class="cr-lb">INFONAVIT (nómina)</div></div><div style="display:flex;align-items:center;gap:6px"><span class="cr-v" style="color:var(--marco)" id="val-infonavit">$21,903</span><span class="chev">›</span></div></div>
-    <div class="cr tap" onclick="editField('renta','Renta mensual',18000)"><div class="cr-l"><div class="cr-lb">Renta</div></div><div style="display:flex;align-items:center;gap:6px"><span class="cr-v" style="color:var(--marco)" id="val-renta">$18,000</span><span class="chev">›</span></div></div>
+    <div class="cr tap" data-action="editField('ingreso_marco','Ingreso neto Marco',56490)"><div class="cr-l"><div class="cr-lb">Ingreso neto mensual</div><div class="cr-s">Toca para editar</div></div><div style="display:flex;align-items:center;gap:6px"><span class="cr-v" style="color:var(--marco)" id="val-ingreso_marco">$56,490</span><span class="chev">›</span></div></div>
+    <div class="cr tap" data-action="editField('vales_marco','Vales de despensa Marco',8296)"><div class="cr-l"><div class="cr-lb">Vales de despensa</div></div><div style="display:flex;align-items:center;gap:6px"><span class="cr-v" style="color:var(--marco)" id="val-vales_marco">$8,296</span><span class="chev">›</span></div></div>
+    <div class="cr tap" data-action="editField('infonavit','INFONAVIT mensual',21903)"><div class="cr-l"><div class="cr-lb">INFONAVIT (nómina)</div></div><div style="display:flex;align-items:center;gap:6px"><span class="cr-v" style="color:var(--marco)" id="val-infonavit">$21,903</span><span class="chev">›</span></div></div>
+    <div class="cr tap" data-action="editField('renta','Renta mensual',18000)"><div class="cr-l"><div class="cr-lb">Renta</div></div><div style="display:flex;align-items:center;gap:6px"><span class="cr-v" style="color:var(--marco)" id="val-renta">$18,000</span><span class="chev">›</span></div></div>
     <div class="lhd">Fabiola</div>
-    <div class="cr tap" onclick="editField('ingreso_fabiola','Ingreso neto Fabiola',30000)"><div class="cr-l"><div class="cr-lb">Ingreso neto mensual</div></div><div style="display:flex;align-items:center;gap:6px"><span class="cr-v" style="color:var(--fabi)" id="val-ingreso_fabiola">$30,000</span><span class="chev">›</span></div></div>
-    <div class="cr tap" onclick="editField('vales_fabiola','Vales de despensa Fabiola',1200)"><div class="cr-l"><div class="cr-lb">Vales de despensa</div></div><div style="display:flex;align-items:center;gap:6px"><span class="cr-v" style="color:var(--fabi)" id="val-vales_fabiola">$1,200</span><span class="chev">›</span></div></div>
+    <div class="cr tap" data-action="editField('ingreso_fabiola','Ingreso neto Fabiola',30000)"><div class="cr-l"><div class="cr-lb">Ingreso neto mensual</div></div><div style="display:flex;align-items:center;gap:6px"><span class="cr-v" style="color:var(--fabi)" id="val-ingreso_fabiola">$30,000</span><span class="chev">›</span></div></div>
+    <div class="cr tap" data-action="editField('vales_fabiola','Vales de despensa Fabiola',1200)"><div class="cr-l"><div class="cr-lb">Vales de despensa</div></div><div style="display:flex;align-items:center;gap:6px"><span class="cr-v" style="color:var(--fabi)" id="val-vales_fabiola">$1,200</span><span class="chev">›</span></div></div>
     <div class="lhd">Split</div>
-    <div class="cr tap" onclick="editField('split_marco','% Marco (complemento = Fabiola)',65)"><div class="cr-l"><div class="cr-lb">Porcentaje Marco</div><div class="cr-s">Fabiola = 100 − este valor</div></div><div style="display:flex;align-items:center;gap:6px"><span class="cr-v" id="val-split_marco">65%</span><span class="chev">›</span></div></div>
+    <div class="cr tap" data-action="editField('split_marco','% Marco (complemento = Fabiola)',65)"><div class="cr-l"><div class="cr-lb">Porcentaje Marco</div><div class="cr-s">Fabiola = 100 − este valor</div></div><div style="display:flex;align-items:center;gap:6px"><span class="cr-v" id="val-split_marco">65%</span><span class="chev">›</span></div></div>
   </div>
 
   <div class="sec-hd"><div class="sec-t">Historial de cambios</div></div>
@@ -679,11 +679,11 @@ a,button,[onclick],[data-tab]{touch-action:manipulation;}
     <div class="lhd">Regla del sistema</div>
     <div class="cr"><div class="cr-l"><div class="cr-lb">% considerado para Split</div><div class="cr-s">PTU, aguinaldo, bonos, comisiones</div></div><span class="cr-v" style="color:var(--orange)">25%</span></div>
     <div class="lhd">Registrar ingreso extra</div>
-    <div class="cr tap" onclick="openExtraModal('marco')">
+    <div class="cr tap" data-action="openExtraModal('marco')">
       <div class="cr-l"><div class="cr-lb">Marco · Agregar ingreso extra</div><div class="cr-s">PTU, bono, comisión, aguinaldo</div></div>
       <span style="font-size:20px;color:var(--blue)">+</span>
     </div>
-    <div class="cr tap" onclick="openExtraModal('fabiola')" style="border:none">
+    <div class="cr tap" data-action="openExtraModal('fabiola')" style="border:none">
       <div class="cr-l"><div class="cr-lb">Fabiola · Agregar ingreso extra</div><div class="cr-s">PTU, bono, comisión, aguinaldo</div></div>
       <span style="font-size:20px;color:var(--fabi)">+</span>
     </div>
@@ -976,7 +976,7 @@ function openCat(id){
     const ov=ovr[item.id]||{};
     const who=ov.who||item.who;
     const bc=WHO_BC[who]||'be';
-    return `<div class="cr tap" onclick="openItem('${id}','${item.id}')" style="${i===cat.items.length-1?'border:none':''}">
+    return `<div class="cr tap" data-action="openItem('${id}','${item.id}')" style="${i===cat.items.length-1?'border:none':''}">
       <div class="cr-l"><div class="cr-lb">${item.desc}</div>
       <div class="cr-s"><span class="badge ${bc}">${WHO_LABELS[who]||who}</span> · ${ov.cat||item.cat} · ${item.meta.split('·')[0].trim()}</div>
       ${ov.notes?`<div style="font-size:10px;color:var(--t2);margin-top:2px">📝 ${ov.notes}</div>`:''}
@@ -1473,85 +1473,31 @@ window.addEventListener('DOMContentLoaded',()=>{
 
 });
 
-  // ── GLOBAL TOUCH → CLICK FIX FOR SAFARI iOS ─────────────
-  // Handles ALL tappable elements: tabs, cards, buttons, cat rows
+  // ── GLOBAL TOUCH HANDLER (Safari iOS) ──────────────────
   document.addEventListener('touchend', function(e) {
-    const el = e.target;
-    
-    // Tab bar
-    const tab = el.closest('[data-tab]');
-    if(tab) {
-      e.preventDefault();
-      showTab(tab.getAttribute('data-tab'));
-      return;
+    var t = e.target;
+    // Walk up to find actionable element
+    var el = t;
+    var found = null;
+    for(var i=0; i<8; i++) {
+      if(!el) break;
+      if(el.getAttribute && el.getAttribute('data-tab')) { found = {type:'tab', el:el}; break; }
+      if(el.getAttribute && el.getAttribute('onclick')) { found = {type:'click', el:el}; break; }
+      if(el.getAttribute && el.getAttribute('data-action')) { found = {type:'action', el:el}; break; }
+      el = el.parentElement;
     }
-
-    // onclick elements — trigger their click
-    const clickable = el.closest('[onclick]');
-    if(clickable) {
+    if(!found) return;
+    e.preventDefault();
+    if(found.type === 'tab') {
+      showTab(found.el.getAttribute('data-tab'));
+    } else if(found.type === 'action') {
       e.preventDefault();
-      clickable.click();
-      return;
+      var fn = found.el.getAttribute('data-action');
+      try { eval(fn); } catch(err) { console.log('action err:', err); }
+    } else if(found.type === 'click') {
+      found.el.click();
     }
-
-    // Cat rows with onclick
-    const catRow = el.closest('.cat-r');
-    if(catRow && catRow.getAttribute('onclick')) {
-      e.preventDefault();
-      catRow.click();
-      return;
-    }
-
-    // CR tap rows
-    const crTap = el.closest('.cr.tap');
-    if(crTap && crTap.getAttribute('onclick')) {
-      e.preventDefault();
-      crTap.click();
-      return;
-    }
-
-    // Quick classify buttons
-    const qcb = el.closest('.qcb');
-    if(qcb && qcb.getAttribute('onclick')) {
-      e.preventDefault();
-      qcb.click();
-      return;
-    }
-
-    // Modal options
-    const mopt = el.closest('.m-opt');
-    if(mopt && mopt.getAttribute('onclick')) {
-      e.preventDefault();
-      mopt.click();
-      return;
-    }
-
-    // Pay buttons
-    const payBtn = el.closest('.pay-btn');
-    if(payBtn && payBtn.getAttribute('onclick')) {
-      e.preventDefault();
-      payBtn.click();
-      return;
-    }
-
-    // Back buttons
-    const backBtn = el.closest('.ph-back');
-    if(backBtn && backBtn.getAttribute('onclick')) {
-      e.preventDefault();
-      backBtn.click();
-      return;
-    }
-
-    // Any button with onclick
-    const anyBtn = el.closest('button[onclick]');
-    if(anyBtn) {
-      e.preventDefault();
-      anyBtn.click();
-      return;
-    }
-
-  }, {passive: false});
-</script>
+  }, false);</script>
 
 </body>
 </html>
