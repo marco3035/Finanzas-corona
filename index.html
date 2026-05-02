@@ -410,6 +410,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 <div class="scr" id="s-split">
   <div class="ph"><div class="ph-title">Split</div><div class="ph-sub">Marco 65% · Fabiola 35%</div></div>
 
+  <div class="note ny" id="split-extra-banner" style="display:none;margin-top:4px"><span id="split-extra-txt"></span></div>
   <div class="tf">
     <div class="tf-eye">Fabiola transfiere a Marco</div>
     <div class="tf-amt">$24,623</div>
@@ -671,6 +672,25 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
   <div class="sec-hd"><div class="sec-t">Historial de cambios</div></div>
   <div class="card" id="hist-list"><div style="padding:20px;text-align:center;color:var(--t2);font-size:14px">Sin cambios registrados</div></div>
 
+  <div class="sec-hd"><div class="sec-t">Ingresos extraordinarios</div><div class="sec-s">PTU · Aguinaldo · Bonos</div></div>
+  <div class="card">
+    <div class="lhd">Regla del sistema</div>
+    <div class="cr"><div class="cr-l"><div class="cr-lb">% considerado para Split</div><div class="cr-s">PTU, aguinaldo, bonos, comisiones</div></div><span class="cr-v" style="color:var(--orange)">25%</span></div>
+    <div class="lhd">Registrar ingreso extra</div>
+    <div class="cr tap" onclick="openExtraModal('marco')">
+      <div class="cr-l"><div class="cr-lb">Marco · Agregar ingreso extra</div><div class="cr-s">PTU, bono, comisión, aguinaldo</div></div>
+      <span style="font-size:20px;color:var(--blue)">+</span>
+    </div>
+    <div class="cr tap" onclick="openExtraModal('fabiola')" style="border:none">
+      <div class="cr-l"><div class="cr-lb">Fabiola · Agregar ingreso extra</div><div class="cr-s">PTU, bono, comisión, aguinaldo</div></div>
+      <span style="font-size:20px;color:var(--fabi)">+</span>
+    </div>
+  </div>
+  <div class="card" id="extras-list"><div style="padding:16px;text-align:center;color:var(--t2);font-size:14px">Sin ingresos extra registrados</div></div>
+
+  <div class="sec-hd"><div class="sec-t">Reglas de clasificación</div><div class="sec-s tap" onclick="openRuleModal()" style="color:var(--blue);cursor:pointer">+ Nueva regla</div></div>
+  <div class="card" id="rules-list"><div style="padding:16px;text-align:center;color:var(--t2);font-size:14px">Sin reglas personalizadas</div></div>
+
   <div class="sec-hd"><div class="sec-t">Reglas activas</div></div>
   <div class="card">
     <div class="tog-r"><span class="tog-lb">Banamex → Split 65/35</span><button class="tog on" onclick="this.classList.toggle('on')"><div class="tog-th"></div></button></div>
@@ -707,6 +727,70 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
     <button class="tb" onclick="showTab('adicionales',this)"><div class="tb-ic">👨‍👩‍👧</div><div class="tb-lb">Famil.</div></button>
     <button class="tb" onclick="showTab('ia',this)"><div class="tb-ic">🤖</div><div class="tb-lb">IA</div></button>
     <button class="tb" onclick="showTab('config',this)"><div class="tb-ic">⚙️</div><div class="tb-lb">Config</div></button>
+  </div>
+</div>
+
+<!-- EXTRA INCOME MODAL -->
+
+<div class="modal-ov" id="extra-modal" onclick="if(event.target===this)closeExtraModal()">
+  <div class="modal">
+    <div class="m-handle"></div>
+    <div class="m-title" id="em-title">Ingreso extraordinario</div>
+    <div class="m-sub" id="em-sub">25% se considera para ajustar el split</div>
+    <div class="m-sec">Tipo de ingreso</div>
+    <button class="m-opt" onclick="setExtraType(this,'PTU')"><span class="m-oi">💼</span><span class="m-ol">PTU</span><span class="m-oc" id="ek-ptu"></span></button>
+    <button class="m-opt" onclick="setExtraType(this,'Aguinaldo')"><span class="m-oi">🎄</span><span class="m-ol">Aguinaldo</span><span class="m-oc" id="ek-agu"></span></button>
+    <button class="m-opt" onclick="setExtraType(this,'Bono')"><span class="m-oi">🏆</span><span class="m-ol">Bono</span><span class="m-oc" id="ek-bon"></span></button>
+    <button class="m-opt" onclick="setExtraType(this,'Comisión')"><span class="m-oi">📈</span><span class="m-ol">Comisión</span><span class="m-oc" id="ek-com"></span></button>
+    <div class="m-sec">Monto bruto recibido</div>
+    <input class="m-inp" id="em-monto" type="number" placeholder="$0.00" inputmode="decimal">
+    <div id="em-preview" style="background:var(--bg3);border-radius:var(--r2);padding:14px;margin-bottom:8px;display:none">
+      <div style="font-size:12px;color:var(--t2);margin-bottom:8px">Impacto en el split este mes:</div>
+      <div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:4px">
+        <span style="color:var(--t2)">25% considerado</span>
+        <span id="em-25pct" style="font-weight:600"></span>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:4px">
+        <span style="color:var(--t2)">Nuevo % Marco</span>
+        <span id="em-pct-m" style="font-weight:600;color:var(--marco)"></span>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:4px">
+        <span style="color:var(--t2)">Nuevo % Fabiola</span>
+        <span id="em-pct-f" style="font-weight:600;color:var(--fabi)"></span>
+      </div>
+      <div style="border-top:1px solid var(--sep);margin-top:8px;padding-top:8px;display:flex;justify-content:space-between;font-size:15px">
+        <span style="font-weight:600">Nueva transferencia</span>
+        <span id="em-transfer" style="font-weight:700;color:var(--green)"></span>
+      </div>
+    </div>
+    <button class="m-save" onclick="saveExtraIncome()">Registrar ingreso extra</button>
+    <button class="m-cancel" onclick="closeExtraModal()">Cancelar</button>
+  </div>
+</div>
+
+<!-- RULE MODAL -->
+
+<div class="modal-ov" id="rule-modal" onclick="if(event.target===this)closeRuleModal()">
+  <div class="modal">
+    <div class="m-handle"></div>
+    <div class="m-title">Nueva regla de clasificación</div>
+    <div class="m-sub">Se aplicará automáticamente a cargos futuros</div>
+    <div class="m-sec">Patrón (texto que aparece en el cargo)</div>
+    <input class="m-inp" id="rule-patron" type="text" placeholder="Ej: PAYPAL *WALMART, OXXO, PADEL...">
+    <div class="m-sec">¿Quién paga?</div>
+    <button class="m-opt" onclick="setRuleWho('marco')"><span class="m-oi">👨</span><span class="m-ol">Marco · Personal</span><span class="m-oc" id="rk-marco"></span></button>
+    <button class="m-opt" onclick="setRuleWho('fabiola')"><span class="m-oi">👩</span><span class="m-ol">Fabiola · Personal</span><span class="m-oc" id="rk-fabiola"></span></button>
+    <button class="m-opt" onclick="setRuleWho('split')"><span class="m-oi">⚖️</span><span class="m-ol">Split 65% / 35%</span><span class="m-oc" id="rk-split"></span></button>
+    <button class="m-opt" onclick="setRuleWho('ext')"><span class="m-oi">🚫</span><span class="m-ol">Externo · No aplica</span><span class="m-oc" id="rk-ext"></span></button>
+    <div class="m-sec">Tarjeta (opcional)</div>
+    <div style="display:flex;gap:8px;margin-bottom:4px">
+      <button class="cgb" id="rt-todas" onclick="setRuleTarjeta('todas',this)" style="flex:1;padding:10px"><div class="cg-ic">🏦</div><div class="cg-lb">Todas</div></button>
+      <button class="cgb" id="rt-amex" onclick="setRuleTarjeta('amex',this)" style="flex:1;padding:10px"><div class="cg-ic">🟡</div><div class="cg-lb">Amex</div></button>
+      <button class="cgb" id="rt-banamex" onclick="setRuleTarjeta('banamex',this)" style="flex:1;padding:10px"><div class="cg-ic">🔴</div><div class="cg-lb">Banamex</div></button>
+      <button class="cgb" id="rt-invex" onclick="setRuleTarjeta('invex',this)" style="flex:1;padding:10px"><div class="cg-ic">🟣</div><div class="cg-lb">Invex</div></button>
+    </div>
+    <button class="m-save" onclick="saveRule()">Guardar regla</button>
+    <button class="m-cancel" onclick="closeRuleModal()">Cancelar</button>
   </div>
 </div>
 
@@ -1123,9 +1207,235 @@ async function syncFromSB(){
 }
 
 // ══ INIT ════════════════════════════════════════════════
+// ══ EXTRA INCOME ════════════════════════════════════════
+let extraPerson = 'fabiola';
+let extraType = 'PTU';
+let ruleWho = 'split';
+let ruleTarjeta = 'todas';
+
+const BASE_MARCO = 56490;
+const BASE_FABIOLA = 30000;
+const INFONAVIT = 21903;
+const EXTRA_PCT = 0.25;
+
+function openExtraModal(person) {
+  extraPerson = person;
+  extraType = 'PTU';
+  document.getElementById('em-title').textContent = (person==='marco'?'Marco':'Fabiola') + ' · Ingreso extraordinario';
+  document.getElementById('em-sub').textContent = '25% se considera para ajustar el split este mes';
+  document.getElementById('em-monto').value = '';
+  document.getElementById('em-preview').style.display = 'none';
+  ['ptu','agu','bon','com'].forEach(k=>document.getElementById('ek-'+k).textContent='');
+  document.getElementById('ek-ptu').textContent = '✓';
+  document.getElementById('extra-modal').classList.add('on');
+  document.getElementById('em-monto').addEventListener('input', previewExtra);
+}
+
+function setExtraType(el, type) {
+  extraType = type;
+  const map = {PTU:'ptu',Aguinaldo:'agu',Bono:'bon','Comisión':'com'};
+  ['ptu','agu','bon','com'].forEach(k=>document.getElementById('ek-'+k).textContent='');
+  if(map[type]) document.getElementById('ek-'+map[type]).textContent = '✓';
+  previewExtra();
+}
+
+function previewExtra() {
+  const monto = parseFloat(document.getElementById('em-monto').value || 0);
+  if(!monto || monto <= 0) { document.getElementById('em-preview').style.display='none'; return; }
+  
+  const considered = monto * EXTRA_PCT;
+  const cfg = JSON.parse(localStorage.getItem('finanzas_cfg')||'{}');
+  const baseMarco = parseFloat(cfg.ingreso_marco || BASE_MARCO);
+  const baseFabi = parseFloat(cfg.ingreso_fabiola || BASE_FABIOLA);
+  
+  const marcoTotal = baseMarco + (extraPerson==='marco' ? considered : 0);
+  const fabiTotal = baseFabi + (extraPerson==='fabiola' ? considered : 0);
+  const hogar = marcoTotal + fabiTotal;
+  const pctMarco = (marcoTotal/hogar*100).toFixed(1);
+  const pctFabi = (fabiTotal/hogar*100).toFixed(1);
+  
+  // Calculate new transfer
+  const splitTotal = 37333; // total gastos split
+  const newTransfer = Math.round(
+    splitTotal * (parseFloat(pctFabi)/100) + INFONAVIT * (parseFloat(pctFabi)/100)
+  );
+  
+  document.getElementById('em-25pct').textContent = '$'+considered.toLocaleString('es-MX');
+  document.getElementById('em-pct-m').textContent = pctMarco+'%';
+  document.getElementById('em-pct-f').textContent = pctFabi+'%';
+  document.getElementById('em-transfer').textContent = '$'+newTransfer.toLocaleString('es-MX');
+  document.getElementById('em-preview').style.display = 'block';
+}
+
+async function saveExtraIncome() {
+  const monto = parseFloat(document.getElementById('em-monto').value || 0);
+  if(!monto || monto <= 0) { alert('Ingresa un monto válido'); return; }
+  const considered = monto * EXTRA_PCT;
+  
+  const extras = JSON.parse(localStorage.getItem('ingresos_extra')||'[]');
+  const item = {
+    id: Date.now().toString(),
+    persona: extraPerson,
+    tipo: extraType,
+    monto_bruto: monto,
+    monto_considerado: considered,
+    periodo_id: 'ABR2026',
+    fecha: new Date().toLocaleDateString('es-MX')
+  };
+  extras.push(item);
+  localStorage.setItem('ingresos_extra', JSON.stringify(extras));
+  
+  setSyncStatus('⟳ Guardando...');
+  await sbPost('ingresos_extra', {
+    persona: extraPerson,
+    tipo: extraType,
+    monto_bruto: monto,
+    porcentaje_split: EXTRA_PCT,
+    monto_considerado: considered,
+    periodo_id: 'ABR2026',
+    fecha: new Date().toISOString()
+  });
+  setSyncStatus('● ✓');
+  closeExtraModal();
+  renderExtras();
+  updateSplitWithExtras();
+}
+
+function closeExtraModal() { document.getElementById('extra-modal').classList.remove('on'); }
+
+function renderExtras() {
+  const extras = JSON.parse(localStorage.getItem('ingresos_extra')||'[]');
+  const el = document.getElementById('extras-list'); if(!el) return;
+  if(!extras.length) {
+    el.innerHTML = '<div style="padding:16px;text-align:center;color:var(--t2);font-size:14px">Sin ingresos extra registrados</div>';
+    return;
+  }
+  el.innerHTML = extras.map((e,i) => `
+    <div class="cr" style="${i===extras.length-1?'border:none':''}">
+      <div class="cr-l">
+        <div class="cr-lb">${e.persona==='marco'?'👨 Marco':'👩 Fabiola'} · ${e.tipo}</div>
+        <div class="cr-s">${e.fecha} · 25% = $${e.monto_considerado.toLocaleString('es-MX')} considerado</div>
+      </div>
+      <div style="text-align:right">
+        <div class="cr-v" style="color:var(--orange)">$${e.monto_bruto.toLocaleString('es-MX')}</div>
+        <div class="cr-hint">bruto</div>
+      </div>
+    </div>`).join('');
+}
+
+function updateSplitWithExtras() {
+  const extras = JSON.parse(localStorage.getItem('ingresos_extra')||'[]');
+  const cfg = JSON.parse(localStorage.getItem('finanzas_cfg')||'{}');
+  const baseMarco = parseFloat(cfg.ingreso_marco || BASE_MARCO);
+  const baseFabi = parseFloat(cfg.ingreso_fabiola || BASE_FABIOLA);
+  
+  const extraMarco = extras.filter(e=>e.persona==='marco').reduce((s,e)=>s+e.monto_considerado,0);
+  const extraFabi = extras.filter(e=>e.persona==='fabiola').reduce((s,e)=>s+e.monto_considerado,0);
+  
+  const totalMarco = baseMarco + extraMarco;
+  const totalFabi = baseFabi + extraFabi;
+  const hogar = totalMarco + totalFabi;
+  const pctM = (totalMarco/hogar*100).toFixed(1);
+  const pctF = (totalFabi/hogar*100).toFixed(1);
+  
+  // Update split screen if extras exist
+  const splitBanner = document.getElementById('split-extra-banner');
+  if(splitBanner && (extraMarco > 0 || extraFabi > 0)) {
+    const splitTotal = 37333;
+    const newTransferFabi = Math.round(splitTotal*(parseFloat(pctF)/100) + INFONAVIT*(parseFloat(pctF)/100));
+    const normalTransfer = 24623;
+    const diff = newTransferFabi - normalTransfer;
+    splitBanner.style.display = 'block';
+    document.getElementById('split-extra-txt').innerHTML = 
+      `⚡ <strong>Split ajustado por ingresos extra</strong><br>` +
+      `Marco ${pctM}% · Fabiola ${pctF}%<br>` +
+      `Transferencia este mes: <strong style="color:var(--green)">$${newTransferFabi.toLocaleString('es-MX')}</strong> ` +
+      `(+$${diff.toLocaleString('es-MX')} vs mes normal)`;
+  }
+}
+
+// ══ RULES ════════════════════════════════════════════════
+function openRuleModal() {
+  ruleWho = 'split'; ruleTarjeta = 'todas';
+  document.getElementById('rule-patron').value = '';
+  ['marco','fabiola','split','ext'].forEach(k=>document.getElementById('rk-'+k).textContent='');
+  document.getElementById('rk-split').textContent = '✓';
+  document.querySelectorAll('[id^="rt-"]').forEach(b=>b.classList.remove('sel'));
+  document.getElementById('rt-todas').classList.add('sel');
+  document.getElementById('rule-modal').classList.add('on');
+}
+function closeRuleModal() { document.getElementById('rule-modal').classList.remove('on'); }
+function setRuleWho(who) {
+  ruleWho = who;
+  ['marco','fabiola','split','ext'].forEach(k=>document.getElementById('rk-'+k).textContent='');
+  document.getElementById('rk-'+who).textContent = '✓';
+}
+function setRuleTarjeta(t, el) {
+  ruleTarjeta = t;
+  document.querySelectorAll('[id^="rt-"]').forEach(b=>b.classList.remove('sel'));
+  el.classList.add('sel');
+}
+
+async function saveRule() {
+  const patron = document.getElementById('rule-patron').value.trim().toUpperCase();
+  if(!patron) { alert('Ingresa un patrón'); return; }
+  const rules = JSON.parse(localStorage.getItem('reglas')||'[]');
+  const rule = { id:Date.now().toString(), patron, quien_paga:ruleWho, tarjeta:ruleTarjeta, activa:true, fecha:new Date().toLocaleDateString('es-MX') };
+  rules.push(rule);
+  localStorage.setItem('reglas', JSON.stringify(rules));
+  setSyncStatus('⟳ Guardando...');
+  await sbPost('reglas', { patron, quien_paga:ruleWho, tarjeta:ruleTarjeta, activa:true });
+  setSyncStatus('● ✓');
+  closeRuleModal();
+  renderRules();
+}
+
+function renderRules() {
+  const rules = JSON.parse(localStorage.getItem('reglas')||'[]');
+  const el = document.getElementById('rules-list'); if(!el) return;
+  if(!rules.length) {
+    el.innerHTML = '<div style="padding:16px;text-align:center;color:var(--t2);font-size:14px">Sin reglas personalizadas · Toca + Nueva regla</div>';
+    return;
+  }
+  const WHO = {marco:'👨 Marco',fabiola:'👩 Fabiola',split:'⚖️ Split',ext:'🚫 Externo'};
+  const BC = {marco:'bm',fabiola:'bf',split:'bs',ext:'be'};
+  el.innerHTML = rules.map((r,i) => `
+    <div class="cr" style="${i===rules.length-1?'border:none':''}">
+      <div class="cr-l">
+        <div class="cr-lb" style="font-family:monospace;font-size:13px">${r.patron}</div>
+        <div class="cr-s">${r.tarjeta==='todas'?'Todas las tarjetas':r.tarjeta} · ${r.fecha||''}</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span class="badge ${BC[r.quien_paga]||'be'}">${WHO[r.quien_paga]||r.quien_paga}</span>
+        <button onclick="deleteRule('${r.id}')" style="background:none;border:none;color:var(--red);font-size:16px;cursor:pointer">✕</button>
+      </div>
+    </div>`).join('');
+}
+
+function deleteRule(id) {
+  const rules = JSON.parse(localStorage.getItem('reglas')||'[]').filter(r=>r.id!==id);
+  localStorage.setItem('reglas', JSON.stringify(rules));
+  renderRules();
+}
+
+// Apply rules to a cargo description
+function applyRules(desc, tarjeta) {
+  const rules = JSON.parse(localStorage.getItem('reglas')||'[]').filter(r=>r.activa);
+  const upper = desc.toUpperCase();
+  for(const rule of rules) {
+    const matchesTarjeta = rule.tarjeta==='todas' || rule.tarjeta===tarjeta;
+    if(matchesTarjeta && upper.includes(rule.patron)) {
+      return { quien_paga: rule.quien_paga, matched: rule.patron };
+    }
+  }
+  return null;
+}
+
 window.addEventListener('DOMContentLoaded',()=>{
   loadConfig(); renderHist(); renderPending();
+  renderExtras(); renderRules();
   syncFromSB();
+  updateSplitWithExtras();
   sbPost('configuracion',{clave:'last_access',valor:new Date().toISOString()}).catch(()=>{});
   // Restore payment states from localStorage
   const pays=JSON.parse(localStorage.getItem('payments')||'{}');
