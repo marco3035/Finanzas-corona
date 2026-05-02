@@ -3,7 +3,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-title" content="Finanzas">
@@ -11,7 +11,7 @@
 <title>Finanzas Corona</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;touch-action:manipulation;cursor:pointer;}
 :root{
   --bg:#000;--bg2:#1c1c1e;--bg3:#2c2c2e;--bg4:#3a3a3c;
   --text:#fff;--t2:rgba(255,255,255,.6);--t3:rgba(255,255,255,.3);
@@ -23,6 +23,8 @@
   --r:16px;--r2:12px;--r3:10px;
 }
 html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:-apple-system,sans-serif;}
+button{-webkit-appearance:none;outline:none;}
+a,button,[onclick],[data-tab]{touch-action:manipulation;}
 .app{height:100vh;display:flex;flex-direction:column;overflow:hidden;}
 
 /* STATUS BAR */
@@ -719,29 +721,29 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
   <!-- TAB BAR -->
 
   <div class="tbar">
-    <button class="tb on" id="tab-inicio" onclick="showTab('inicio')">
+    <button class="tb on" id="tab-inicio" data-tab="inicio">
       <div class="tb-ic">🏠</div><div class="tb-lb">Inicio</div>
     </button>
-    <button class="tb" id="tab-tarjetas" onclick="showTab('tarjetas')">
+    <button class="tb" id="tab-tarjetas" data-tab="tarjetas">
       <div class="tb-ic">💳</div><div class="tb-lb">Tarjetas</div>
     </button>
-    <button class="tb" id="tab-split" onclick="showTab('split')">
+    <button class="tb" id="tab-split" data-tab="split">
       <div class="tb-ic">⚖️</div><div class="tb-lb">Split</div>
     </button>
-    <button class="tb" id="tab-gastos" onclick="showTab('gastos')">
+    <button class="tb" id="tab-gastos" data-tab="gastos">
       <div class="tb-ic">📊</div><div class="tb-lb">Gastos</div>
     </button>
-    <button class="tb" id="tab-clasificar" onclick="showTab('clasificar')">
+    <button class="tb" id="tab-clasificar" data-tab="clasificar">
       <div class="tb-ic">✅</div><div class="tb-lb">Clasificar</div>
       <div class="tb-badge" id="tb-badge" style="display:none">0</div>
     </button>
-    <button class="tb" id="tab-adicionales" onclick="showTab('adicionales')">
+    <button class="tb" id="tab-adicionales" data-tab="adicionales">
       <div class="tb-ic">👨‍👩‍👧</div><div class="tb-lb">Famil.</div>
     </button>
-    <button class="tb" id="tab-ia" onclick="showTab('ia')">
+    <button class="tb" id="tab-ia" data-tab="ia">
       <div class="tb-ic">🤖</div><div class="tb-lb">IA</div>
     </button>
-    <button class="tb" id="tab-config" onclick="showTab('config')">
+    <button class="tb" id="tab-config" data-tab="config">
       <div class="tb-ic">⚙️</div><div class="tb-lb">Config</div>
     </button>
   </div>
@@ -1470,6 +1472,25 @@ window.addEventListener('DOMContentLoaded',()=>{
   } catch(e) { console.log('pays err', e); }
 
 });
+
+  // ── TAB BAR EVENT DELEGATION (Safari iOS fix) ──────────
+  document.querySelector('.tbar').addEventListener('touchend', function(e) {
+    e.preventDefault();
+    const btn = e.target.closest('[data-tab]');
+    if(btn) {
+      const id = btn.getAttribute('data-tab');
+      showTab(id);
+    }
+  }, {passive: false});
+
+  // Also handle clicks for desktop/preview
+  document.querySelector('.tbar').addEventListener('click', function(e) {
+    const btn = e.target.closest('[data-tab]');
+    if(btn) {
+      const id = btn.getAttribute('data-tab');
+      showTab(id);
+    }
+  });
 </script>
 
 </body>
