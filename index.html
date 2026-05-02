@@ -1473,24 +1473,84 @@ window.addEventListener('DOMContentLoaded',()=>{
 
 });
 
-  // ── TAB BAR EVENT DELEGATION (Safari iOS fix) ──────────
-  document.querySelector('.tbar').addEventListener('touchend', function(e) {
-    e.preventDefault();
-    const btn = e.target.closest('[data-tab]');
-    if(btn) {
-      const id = btn.getAttribute('data-tab');
-      showTab(id);
+  // ── GLOBAL TOUCH → CLICK FIX FOR SAFARI iOS ─────────────
+  // Handles ALL tappable elements: tabs, cards, buttons, cat rows
+  document.addEventListener('touchend', function(e) {
+    const el = e.target;
+    
+    // Tab bar
+    const tab = el.closest('[data-tab]');
+    if(tab) {
+      e.preventDefault();
+      showTab(tab.getAttribute('data-tab'));
+      return;
     }
-  }, {passive: false});
 
-  // Also handle clicks for desktop/preview
-  document.querySelector('.tbar').addEventListener('click', function(e) {
-    const btn = e.target.closest('[data-tab]');
-    if(btn) {
-      const id = btn.getAttribute('data-tab');
-      showTab(id);
+    // onclick elements — trigger their click
+    const clickable = el.closest('[onclick]');
+    if(clickable) {
+      e.preventDefault();
+      clickable.click();
+      return;
     }
-  });
+
+    // Cat rows with onclick
+    const catRow = el.closest('.cat-r');
+    if(catRow && catRow.getAttribute('onclick')) {
+      e.preventDefault();
+      catRow.click();
+      return;
+    }
+
+    // CR tap rows
+    const crTap = el.closest('.cr.tap');
+    if(crTap && crTap.getAttribute('onclick')) {
+      e.preventDefault();
+      crTap.click();
+      return;
+    }
+
+    // Quick classify buttons
+    const qcb = el.closest('.qcb');
+    if(qcb && qcb.getAttribute('onclick')) {
+      e.preventDefault();
+      qcb.click();
+      return;
+    }
+
+    // Modal options
+    const mopt = el.closest('.m-opt');
+    if(mopt && mopt.getAttribute('onclick')) {
+      e.preventDefault();
+      mopt.click();
+      return;
+    }
+
+    // Pay buttons
+    const payBtn = el.closest('.pay-btn');
+    if(payBtn && payBtn.getAttribute('onclick')) {
+      e.preventDefault();
+      payBtn.click();
+      return;
+    }
+
+    // Back buttons
+    const backBtn = el.closest('.ph-back');
+    if(backBtn && backBtn.getAttribute('onclick')) {
+      e.preventDefault();
+      backBtn.click();
+      return;
+    }
+
+    // Any button with onclick
+    const anyBtn = el.closest('button[onclick]');
+    if(anyBtn) {
+      e.preventDefault();
+      anyBtn.click();
+      return;
+    }
+
+  }, {passive: false});
 </script>
 
 </body>
