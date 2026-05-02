@@ -32,7 +32,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 
 /* SCREENS */
 .screens{flex:1;overflow:hidden;position:relative;}
-.scr{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;display:none;padding-bottom:calc(110px + env(safe-area-inset-bottom));}
+.scr{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;display:none;padding-bottom:calc(130px + env(safe-area-inset-bottom));}
 .scr.on{display:block;animation:fu .22s ease;}
 @keyframes fu{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 
@@ -40,7 +40,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 .sub{display:none;} .sub.on{display:block;}
 
 /* TAB BAR */
-.tbar{position:fixed;bottom:0;left:0;right:0;z-index:100;background:rgba(10,10,10,.96);backdrop-filter:blur(30px);border-top:1px solid var(–sep);display:flex;padding:10px 0 calc(10px + env(safe-area-inset-bottom));}
+.tbar{position:fixed;bottom:0;left:0;right:0;z-index:100;background:rgba(10,10,10,.98);backdrop-filter:blur(30px);border-top:1px solid var(–sep);display:flex;padding:10px 0 calc(14px + env(safe-area-inset-bottom));}
 .tb{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 2px;border:none;background:none;color:var(–t3);cursor:pointer;transition:color .15s;position:relative;}
 .tb.on{color:var(–blue);}
 .tb-ic{font-size:24px;line-height:1.2;}
@@ -264,7 +264,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
   <div class="sb">
     <span id="clock">9:41</span>
     <span class="sb-mid">Finanzas Corona</span>
-    <span id="sync">● Ok</span>
+    <span id="sync" style="color:#30d158;font-size:11px">● Ok</span>
   </div>
 
   <div class="screens">
@@ -1451,18 +1451,24 @@ function applyRules(desc, tarjeta) {
 }
 
 window.addEventListener('DOMContentLoaded',()=>{
-  loadConfig(); renderHist(); renderPending();
-  renderExtras(); renderRules();
-  syncFromSB();
-  updateSplitWithExtras();
-  sbPost('configuracion',{clave:'last_access',valor:new Date().toISOString()}).catch(()=>{});
-  // Restore payment states from localStorage
-  const pays=JSON.parse(localStorage.getItem('payments')||'{}');
-  Object.keys(pays).forEach(k=>{
-    const card=k.replace('_ABR2026','');
-    const p=pays[k];
-    updateCardPayStatus(card,p.amt,p.date,p.noInterest);
-  });
+  try { loadConfig(); } catch(e) { console.log('loadConfig err', e); }
+  try { renderHist(); } catch(e) { console.log('renderHist err', e); }
+  try { renderPending(); } catch(e) { console.log('renderPending err', e); }
+  try { renderExtras(); } catch(e) { console.log('renderExtras err', e); }
+  try { renderRules(); } catch(e) { console.log('renderRules err', e); }
+  try { syncFromSB(); } catch(e) { console.log('sync err', e); }
+  try { updateSplitWithExtras(); } catch(e) { console.log('split err', e); }
+  try { sbPost('configuracion',{clave:'last_access',valor:new Date().toISOString()}); } catch(e) {}
+  // Restore payment states
+  try {
+    const pays=JSON.parse(localStorage.getItem('payments')||'{}');
+    Object.keys(pays).forEach(k=>{
+      const card=k.replace('_ABR2026','');
+      const p=pays[k];
+      updateCardPayStatus(card,p.amt,p.date,p.noInterest);
+    });
+  } catch(e) { console.log('pays err', e); }
+
 });
 </script>
 
